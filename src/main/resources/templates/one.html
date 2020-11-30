@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<form th:action="@{/}" id="homeForm">
+    <input type="submit" value="strona główna"/>
+</form>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Produkt "${}"</title>
+</head>
+<body>
+<form method="POST" th:action="@{/productList/one}" th:object="${commentU}">
+    <h1 th:text="${product.getBrand()}"></h1>
+    <h1 th:text="${product.getName()}"></h1>
+    <input type="submit" name="like" th:text="${liked}" class="button" value="like" />
+
+    <h1> lista składników:  </h1>
+
+
+    <div class="ingredient-group" id="proteins">
+        <h3>Znalezione produkty:</h3>
+        <div th:each="skladnik : ${ingredients}">
+            <span th:text="${skladnik.ingredient.getName()}">, </span>
+            <span th:text="${skladnik.ingredient.getType()}"> </span>
+            <span th:text="${skladnik.comed}"> </span>
+            <span th:text="${skladnik.irr}"> </span>
+            <span th:text="${skladnik.safety}"> </span>
+            <!-- jeśli to jest true to ma cis większe niż w parameters  i
+            podświetlam to na żółto jako warning -->
+            <span th:text="${skladnik.cisHigher}"> </span>
+            <br/>
+
+        </div>
+
+        <h3>komentarze :</h3>
+        <div th:each="comment : ${comments}">
+            <span th:text="${comment.getScore()}">, </span>
+            <span th:text="${comment.getText()}"> </span>
+            <span th:text="${comment.getDate()}"> </span>
+            <span th:text="${comment.getId()}"> </span>
+            <button type="submit" name="delete" th:value="${comment.getId()}" > x </button>
+            <!--<input type="submit" name="delete" text=" usuń" th:value="${comment.getId()}" /> <br/>-->
+            <br/>
+
+        </div>
+        <h3>Dodaj komentarz: </h3>
+        <input type="range" id="vol3" name="score" step ="1" min="1" max="10" th:field="*{score}" >
+        <textarea rows="4" cols="50" th:field="*{text}"></textarea>
+        <input type="submit" name="comment" class="button" value="comment" />
+
+
+
+    </div>
+    <!-- wyświetlam listę produktów z każdym z przyciskiem "skład" otwerający okno ze składem-->
+</form>
+
+
+
+
+
+</body>
+</html>

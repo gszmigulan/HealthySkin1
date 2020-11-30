@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>dodawanie produktu</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+
+
+
+<body>
+
+<span th:text="${alert}"> </span> <br/>
+
+<h1>Dodaj nowy kosmetyk</h1>
+
+<form th:action="@{/}" id="homeForm">
+    <input type="submit" value="strona główna"/>
+</form>
+
+<form method="POST" th:action="@{/add}"th:object="${productData}">
+
+
+    <div>
+
+        <h3>Producent:</h3>
+        <label for="brand">Producent: </label>
+        <input type="text" th:field="*{brand}"/>
+        <span class="validationError"
+              th:if="${#fields.hasErrors('brand')}"
+              th:errors="*{brand}">Branad Error</span>
+        <br/>
+        <!--<input type="text" th:field="*{brand}"/>
+        <span class="validationError"
+              th:if="${#fields.hasErrors('brand')}"
+              th:errors="*{brand}">brand Error</span>
+        <br/>-->
+
+        <!--<span th:text="${#fields.hasErrors('brand')}">XXX</span>
+        <span class="validationError"
+              th:if="${#fields.hasErrors('name')}"
+              th:errors="*{name}">Name Error</span>-->
+
+        <br/>
+        <h3>Nazwa:</h3>
+        <label for="name">Producent: </label>
+        <input type="text" th:field="*{name}"/>
+        <span class="validationError"
+              th:if="${#fields.hasErrors('name')}"
+              th:errors="*{name}">name Error</span>
+        <br/>
+        <!--<input type="text" th:field="*{name}"/>
+        <span class="validationError"
+              th:if="${#fields.hasErrors('name')}"
+              th:errors="*{name}">Name Error</span>
+        <br/>-->
+        <br/>
+        <h3>Skład:</h3>
+        <textarea rows="4" cols="50" th:field="*{ingredients}"/>
+        <span class="validationError"
+              th:if="${#fields.hasErrors('ingredients')}"
+              th:errors="*{ingredients}">ingredients Error</span>
+        <br/>
+        <!--<div th:each=" productType : ${productType}">
+            <input name="unwanted" type="checkbox" th:value="${unwanted.id}" />
+            <span th:text="${unwanted.name}">INGREDIENT</span><br/>
+        </div>-->
+        <br/>
+        <button type="submit" name="add" value="dodaj produkt">Submit your taco</button>
+
+         <br>
+        <tr th:each="ingredient : ${unknownList}">
+            <p>nieznany składnik: </p>
+            <span th:text="${ingredient.name}">, </span>
+
+            <!-- <input type="submit" name="add" class="button" th:value="${ingredient.name}" value="dodaj składnik" />-->
+            <button type="submit" name="addIngr" th:value="${ingredient.name}" > dodaj składnik</button>
+
+
+            <br>
+        </tr>
+
+
+    </div>
+</form>
+</body>
+</html>

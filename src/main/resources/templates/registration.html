@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Healthy skin</title>
+</head>
+
+<body>
+<h1>Register</h1>
+
+<p>You alread have an acount? Click
+    <a th:href="@{/login}">here</a> to log in.</p>
+
+<span th:text="${alert}"> </span> <br/>
+
+<form method="POST" th:action="@{/register}" id="registerForm" th:object="${registrationForm}">
+
+    <label for="username">Nazwa: </label>
+    <input type="text" th:field="*{username}"/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('username')}"
+          th:errors="*{username}">Name Error</span>
+    <br/>
+    <label for="password">Hasło: </label>
+    <input type="password"  name="password" th:field="*{password}"/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('password')}"
+          th:errors="*{password}">Password Error</span>
+    <br/>
+
+    <label for="confirm">Hasło: </label>
+    <input type="password"  name="confirm" th:field="*{confirm}"/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('confirm')}"
+          th:errors="*{confirm}">Password Error</span>
+    <br/>
+    <label for="fullname">Imie i nazwisko: </label>
+    <input type="text" th:field="*{fullname}"/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('fullname')}"
+          th:errors="*{fullname}">Name Error</span>
+    <br/>
+
+  <!--  <label for="username">Username: </label>
+    <input type="text" name="username"/><br/>
+    <span th:text="${#fields.hasErrors('username')}">XXX</span>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('username')}"
+          th:errors="*{username}">Name Error</span>
+
+    <label for="password">Password: </label>
+    <input type="password" name="password"/><br/>
+
+    <label for="confirm">Confirm password: </label>
+    <input type="password" name="confirm"/><br/>
+
+    <label for="fullname">Full name: </label>
+    <input type="text" name="fullname"/><br/>-->
+
+    <!--<label for="comed">comeed 0-5: </label>
+    <input type="text" name="comed"/><br/>
+
+    <label for="irr">iiritation 0-5: </label>
+    <input type="text" name="irr"/><br/>
+
+    <label for="safety">safety 1-10: </label>
+    <input type="text" name="safety"/><br/>-->
+
+
+
+    <label for="vol1">comedogenic ( 0 - 5):</label>
+    <input type="range" id="vol1" name="comed" step ="1"  max="5" min="0" th:field="*{comed}" >
+
+
+    <label for="vol2">irritation ( 0 - 5):</label>
+    <input type="range" id="vol2" name="irr" step ="1" min="0" max="5" th:field="*{irr}" >
+
+    <hr>
+    <label for="vol3">long-term safety ( 1 - 10):</label>
+    <input type="range" id="vol3" name="safety" step ="1" min="1" max="10" th:field="*{safety}" >
+
+    <input type="submit" value="Register"/>
+</form>
+
+</body>
+</html>

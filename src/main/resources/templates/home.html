@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Healthy skin</title>
+</head>
+<body>
+    <h1> witaj w Healthy skin </h1>
+    <!DOCTYPE html>
+    <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:th="http://www.thymeleaf.org">
+
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Healthy skin</title>
+    </head>
+    <body>
+
+    <h3 th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]</h3>
+    <img th:src="@{/images/TacoCloud.png}"/>
+
+    <form method="GET" th:action="@{/design}" id="designForm">
+        <input type="submit" value="filtrate"/>
+    </form>
+
+    <form method="GET" th:action="@{/parameters}" id="parametersForm">
+        <input type="submit" value="parameters"/>
+    </form>
+
+    <form method="GET" th:action="@{/productList/favorite}" id="faveForm">
+        <input type="submit" value="favorites"/>
+    </form>
+
+    <form method="GET" th:action="@{/add}" id="addForm">
+        <input type="submit" value="add product"/>
+    </form>
+
+
+    <form method="POST" th:action="@{/logout}" id="logoutForm">
+        <input type="submit" value="Logout"/>
+    </form>
+
+    <a href="https://pl.freepik.com/wektory/edukacja">Edukacja plik wektorowy utworzone przez brgfx - pl.freepik.com</a>
+    <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik" >Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" >www.flaticon.com</a></div>
+    </body>
+    </html>
+
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lista porduktów</title>
+</head>
+<body>
+<form method="POST" th:action="@{/productList/filtred}" th:object="${one}">
+<h1> lista produktów </h1>
+
+
+    <div class="ingredient-group" id="proteins">
+        <h3>Znalezione produkty:</h3>
+        <div th:each="product : ${products}">
+            <span th:text="${product.getBrand()}">, </span>
+            <span th:text="${product.getName()}"></span>
+            <!--<input type="submit" name="id" text=" zobacz" th:value="${product.id}" th:field ="*{id}" /> <br/>-->
+            <button type="submit" name="id" th:value="${product.id}" > zobacz skład </button> <br/>
+
+
+        </div>
+    </div>
+    <!-- wyświetlam listę produktów z każdym z przyciskiem "skład" otwerający okno ze składem-->
+</form>
+
+
+</body>
+</html>

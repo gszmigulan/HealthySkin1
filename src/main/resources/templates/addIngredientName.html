@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj składnik</title>
+</head>
+<body>
+
+<form method="POST" th:action="@{/add/ingredient}" th:object="${newIngr}" >
+
+    <div th:each="warning: ${WarningsList}">
+        <span th:text="${warning}"></span>
+    </div>
+
+    <h1> nieznane składniki: </h1>
+
+
+    <div class="ingredient-group" id="proteins">
+        <span th:text="*{name}"></span> <br>
+        <h3>Dodaj jako nowy składnk: </h3>
+
+       <!-- <input type="text" th:field="*{name}" th:text="${name}" >-->
+        <span th:text="${name}"> </span>
+        <input type="text" th:field="*{types}" >
+        <input type="text" th:field="*{comed}" >
+        <input type="text" th:field="*{irr}" >
+        <input type="text" th:field="*{safety}" >
+        <input type="submit" name="new" class="button" value="dodaj" />
+        <h3>Dodaj jako inna nazwa istniejącego składnika: </h3>
+
+        <div >
+            <select class="form-control" th:field="${chose.existing}"  id="dropOperator">
+                <option value="0">select operator</option>
+                <option th:each="ingredients : ${ingrList}" th:value="${ingredients.rowid}" th:text="${ingredients.name}"></option>
+            </select>
+        </div>
+
+        <input type="submit" name="connect" class="button" value="połącz" />
+
+
+
+
+    </div>
+    <!-- wyświetlam listę produktów z każdym z przyciskiem "skład" otwerający okno ze składem-->
+</form>
+
+
+
+</body>
+</html>

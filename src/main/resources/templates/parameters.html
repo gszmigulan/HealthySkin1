@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dopasuj parametry do swojej skóry</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+
+<body>
+<h1>Dopasuj kosmetyk do swojej skóry</h1>
+
+<form th:action="@{/}" id="homeForm">
+    <input type="submit" value="strona główna"/>
+</form>
+
+<div th:each="warning: ${WarningsList}">
+    <span th:text="${warning}"></span>
+</div>
+
+<form method="POST" th:object="${design}">
+
+    <!-- tu jest jakiś błąd z ingredients   <span
+    może jak zmienie wszystkie ingredients na unwanted (bo takie pole jest w safeproduct ) to będzie działać-->
+    <span class="validationError"
+          th:if="${#fields.hasErrors('unwanted')}"
+          th:errors="*{unwanted}">Ingredient Error</span>
+
+
+
+    <!-- to musi być defaultowo ustawione na 5 i powinno wyświetlać wartość -->
+    <label for="vol1">comedogenic ( 0 - 5):</label>
+    <input type="range" id="vol1" name="comedogenic" step ="1"  max="5" min="0" th:field="*{comedogenic}" >
+
+
+    <label for="vol2">irritation ( 0 - 5):</label>
+    <input type="range" id="vol2" name="irritation" step ="1" min="0" max="5" th:field="*{irritation}" >
+
+    <hr>
+    <label for="vol3">long-term safety ( 1 - 10):</label>
+    <input type="range" id="vol3" name="safety" step ="1" min="1" max="10" th:field="*{safety}" >
+
+    <div>
+        <button name="save">Zapisz swoje ustawienia</button>
+    </div>
+
+
+    <div class="grid">
+        <h1>OPCJE PRO</h1>
+        <div class="ingredient-group" id="wraps">
+
+            <h3>Szukane składniki: </h3>
+            <div >
+                <select class="form-control" th:field="${design.nextWanted}"  id="dropOperatorW">
+                    <option value="0">dodaj szukany składnik</option>
+                    <option th:each="ingredients : ${allIngr}" th:value="${ingredients.rowid}" th:text="${ingredients.name}"></option>
+                </select>
+                <button name="addWanted"> dodaj </button>
+            </div>
+
+            <div th:each="userW: ${design.wanted}">
+                <span th:text="${userW.name}"></span>
+                <!--<input type="submit" name="deleteW" text=" usuń" th:value="${userW.rowid}" th:field ="*{id}" /> <br/>-->
+                <button type="submit" name="deleteW" th:value="${userW.rowid}" > X</button> <br/>
+            </div>
+
+
+        </div>
+       <div class="ingredient-group" id="proteins">
+            <h3>Niechciane składniki:</h3>
+            <div >
+               <select class="form-control" th:field="${design.nextUnwanted}"  id="dropOperatorU">
+                   <option value="0">dodaj niechciany składnik</option>
+                   <option th:each="ingredients : ${allIngr}" th:value="${ingredients.rowid}" th:text="${ingredients.name}"></option>
+               </select>
+                <button name="addUnwanted"> dodaj </button>
+            </div>
+
+            <div th:each="userU: ${design.unwanted}">
+                <span th:text="${userU.name}"></span>
+               <!--<input type="submit" name="deleteU" text=" usuń" th:value="${userU.rowid}" th:field ="*{id}" /> <br/>-->
+                <button type="submit" name="deleteU" th:value="${userU.rowid}" > X</button> <br/>
+            </div>
+
+
+       </div>
+
+    </div>
+
+
+
+</form>
+</body>
+</html>
+
