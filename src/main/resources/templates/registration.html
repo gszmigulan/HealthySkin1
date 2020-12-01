@@ -1,86 +1,273 @@
-<!DOCTYPE html>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Healthy skin</title>
-</head>
+<!------ Include the above in your HEAD tag ---------->
 
-<body>
-<h1>Register</h1>
+<style>
 
-<p>You alread have an acount? Click
-    <a th:href="@{/login}">here</a> to log in.</p>
+    body {
+        background: #e6ccff;/*#C5E1A5;*/
+    }
+    form {
+        width: 60%;
+        margin: 60px auto;
+        background: #efefef;
+        padding: 60px 120px 80px 120px;
+        text-align: center;
+        -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+        box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+    }
+    label {
+        display: block;
+        position: relative;
+        margin: 40px 0px;
+    }
+    .label-txt {
+        position: absolute;
+        top: -1.6em;
+        padding: 10px;
+        font-family: sans-serif;
+        font-size: .8em;
+        letter-spacing: 1px;
+        color: rgb(120,120,120);
+        transition: ease .3s;
+    }
+    .input {
+        width: 100%;
+        padding: 10px;
+        background: transparent;
+        border: none;
+        outline: none;
+    }
 
-<span th:text="${alert}"> </span> <br/>
+    .line-box {
+        position: relative;
+        width: 100%;
+        height: 2px;
+        background: #BCBCBC;
+    }
+
+    .line {
+        position: absolute;
+        width: 0%;
+        height: 2px;
+        top: 0px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #7300e6;/*#8BC34A;*/
+        transition: ease .6s;
+    }
+
+    .input:focus + .line-box .line {
+        width: 100%;
+    }
+
+    .label-active {
+        top: -3em;
+    }
+
+    button {
+        display: inline-block;
+        padding: 12px 24px;
+        background: rgb(220,220,220);
+        font-weight: bold;
+        color: rgb(120,120,120);
+        border: none;
+        outline: none;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: ease .3s;
+    }
+
+    button:hover {
+        background: #7300e6;/*#8BC34A;*/
+        color: #ffffff;
+    }
+
+    span.validationError {
+        color: red;
+    }
+    span.alert {
+        color: red;
+    }
+    .sowaki{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        padding-top: 20px;
+        /*padding-right: 250px;
+        padding-left: 50px;*/
+
+    }
+    .sowaki-outer{
+        display: flex;
+        flex-direction: row;
+        /*align-items: center;*/
+        justify-content: center;
+    }
+
+
+
+
+
+
+    .slider {
+        -webkit-appearance: none;
+        width: 200px;
+        height: 2px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+    }
+
+    .slider:hover {
+        opacity: 1;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: #7300e6;
+        cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        background: #7300e6;
+        cursor: default;
+    }
+
+
+
+</style>
+
+<script>
+
+    $(document).ready(function(){
+
+        $('.input').focus(function(){
+            $(this).parent().find(".label-txt").addClass('label-active');
+        });
+
+        $(".input").focusout(function(){
+            if ($(this).val() == '') {
+                $(this).parent().find(".label-txt").removeClass('label-active');
+            };
+        });
+
+    });
+
+
+
+</script>
 
 <form method="POST" th:action="@{/register}" id="registerForm" th:object="${registrationForm}">
+    <h1>Zarejestruj się: </h1>
+    <span class="alert" th:text="${alert}"></span>
+    <label>
+        <p class="label-txt">NAZWA UŻYTKOWNIKA</p>
+        <!--<input type="text" class="input">-->
+        <input type="text" class="input" name="username" th:filed="*{username}"/>
+        <span class="validationError"
+              th:if="${#fields.hasErrors('username')}"
+              th:errors="*{username}">Name Error</span>
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </label>
+    <label>
+        <p class="label-txt">HASŁO</p>
+        <!--<input type="text" class="input">-->
+        <input  class="input" type="password"  name="password" th:field="*{password}"/>
+        <span class="validationError"
+              th:if="${#fields.hasErrors('password')}"
+              th:errors="*{password}">Password Error</span>
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </label>
+    <label>
+        <p class="label-txt">POWTÓRZ HASŁO</p>
+        <input class="input" type="password"  name="confirm" th:field="*{confirm}"/>
+        <span class="validationError"
+              th:if="${#fields.hasErrors('confirm')}"
+              th:errors="*{confirm}">Password Error</span>
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </label>
+    <label>
+        <p class="label-txt">PEŁNE IMIE</p>
+        <input class="input" type="text" th:field="*{fullname}"/>
+        <span class="validationError"
+              th:if="${#fields.hasErrors('fullname')}"
+              th:errors="*{fullname}">Name Error</span>
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </label>
+    <label>
+        <p class="label-txt">POTRZEBY MOJEJ SKÓRY:</p>
+        <div class="sowaki-outer">
+            <div class="sowaki">
+                <div>
+                    <span>comedogeniczność : </span>
+                    <input type="range" min="0" max="5"  value="5" class="slider" id="vol4" th:field="*{comed}">
+                    <span id="non_comed_id"></span>
+                </div>
 
-    <label for="username">Nazwa: </label>
-    <input type="text" th:field="*{username}"/>
-    <span class="validationError"
-          th:if="${#fields.hasErrors('username')}"
-          th:errors="*{username}">Name Error</span>
-    <br/>
-    <label for="password">Hasło: </label>
-    <input type="password"  name="password" th:field="*{password}"/>
-    <span class="validationError"
-          th:if="${#fields.hasErrors('password')}"
-          th:errors="*{password}">Password Error</span>
-    <br/>
+                <div>
+                    <span>irytacja : </span>
+                    <input type="range" min="0" max="5" value="5" class="slider" id="irr_id" th:field="*{irr}">
+                    <span id="irr_v"></span>
+                </div>
 
-    <label for="confirm">Hasło: </label>
-    <input type="password"  name="confirm" th:field="*{confirm}"/>
-    <span class="validationError"
-          th:if="${#fields.hasErrors('confirm')}"
-          th:errors="*{confirm}">Password Error</span>
-    <br/>
-    <label for="fullname">Imie i nazwisko: </label>
-    <input type="text" th:field="*{fullname}"/>
-    <span class="validationError"
-          th:if="${#fields.hasErrors('fullname')}"
-          th:errors="*{fullname}">Name Error</span>
-    <br/>
+                <div>
+                    <span>bezpieczeństwo : </span>
+                    <input type="range" min="1" max="10" value="10" class="slider" id="safe_id" th:field="*{safety}">
+                    <span id="safe_v"></span>
+                </div>
 
-  <!--  <label for="username">Username: </label>
-    <input type="text" name="username"/><br/>
-    <span th:text="${#fields.hasErrors('username')}">XXX</span>
-    <span class="validationError"
-          th:if="${#fields.hasErrors('username')}"
-          th:errors="*{username}">Name Error</span>
-
-    <label for="password">Password: </label>
-    <input type="password" name="password"/><br/>
-
-    <label for="confirm">Confirm password: </label>
-    <input type="password" name="confirm"/><br/>
-
-    <label for="fullname">Full name: </label>
-    <input type="text" name="fullname"/><br/>-->
-
-    <!--<label for="comed">comeed 0-5: </label>
-    <input type="text" name="comed"/><br/>
-
-    <label for="irr">iiritation 0-5: </label>
-    <input type="text" name="irr"/><br/>
-
-    <label for="safety">safety 1-10: </label>
-    <input type="text" name="safety"/><br/>-->
+            </div>
+        </div>
+    </label>
 
 
+    <script>
+        var slider = document.getElementById("vol4");
+        var output = document.getElementById("non_comed_id");
 
-    <label for="vol1">comedogenic ( 0 - 5):</label>
-    <input type="range" id="vol1" name="comed" step ="1"  max="5" min="0" th:field="*{comed}" >
+        output.innerHTML = slider.value;
 
+        slider.oninput = function() {
+            output.innerHTML = this.value;
+        }
 
-    <label for="vol2">irritation ( 0 - 5):</label>
-    <input type="range" id="vol2" name="irr" step ="1" min="0" max="5" th:field="*{irr}" >
+    </script>
+    <script>
+        var slider2 = document.getElementById("irr_id");
+        var output2 = document.getElementById("irr_v");
+        output2.innerHTML = slider2.value;
+        slider2.oninput = function() {
+            output2.innerHTML = this.value;
+        }
+    </script>
+    <script>
+        var slider3 = document.getElementById("safe_id");
+        var output3 = document.getElementById("safe_v");
+        output3.innerHTML = slider3.value;
+        slider3.oninput = function() {
+            output3.innerHTML = this.value;
+        }
+    </script>
 
-    <hr>
-    <label for="vol3">long-term safety ( 1 - 10):</label>
-    <input type="range" id="vol3" name="safety" step ="1" min="1" max="10" th:field="*{safety}" >
-
-    <input type="submit" value="Register"/>
+    <button type="submit">submit</button> <br>
+    <p>You alread have an acount? Click <a th:href="@{/login}">here</a> to log in.</p>
 </form>
-
-</body>
-</html>

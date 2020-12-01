@@ -1,54 +1,101 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+<html lang="pt-br">
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-
-
 <head>
     <meta charset="UTF-8">
-    <title>Healthy skin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Responsive Sticky Navbar</title>
+    <link rel="stylesheet" href="home.css">
+  <!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">-->
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 </head>
 <body>
-    <h1> witaj w Healthy skin </h1>
-    <!DOCTYPE html>
-    <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-          xmlns:th="http://www.thymeleaf.org">
+<div class="wrapper">
+    <header>
+        <nav>
+            <div class="menu-icon">
+                <i class="fa fa-bars fa-2x"></i>
+            </div>
+            <div class="logo">
+                LOGO
+            </div>
+            <div class="menu">
+                <ul>
+                    <li>
+                        <form method="GET" th:action="@{/design}" id="designForm">
+                            <button class="btn btn-outline-light" type="submit" value="filtrate">szukaj </button>
+                        </form>
+                    </li>
+                    <li>
+                        <form method="GET" th:action="@{/parameters}" id="parametersForm">
+                            <button class="btn btn-outline-light" type="submit" value="parameters">moje ustawienia</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form method="GET" th:action="@{/productList/favorite}" id="faveForm">
+                            <button class="btn btn-outline-light" type="submit" value="favorites">ulubione</button>
+                        </form>
+
+                    </li>
+                    <li>
+                        <form method="GET" th:action="@{/add}" id="addForm">
+                            <button class="btn btn-outline-light" type="submit" value="add product">dodaj produkt</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form method="POST" th:action="@{/logout}" id="logoutForm">
+                            <button class="btn btn-outline-light" type="submit" value="Logout">wyloguj</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <img class="MyPicture123"  alt="Cinque Terre" >
+    <div class="myPicture">
+        <h3 th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]</h3>
+
+    </div>
 
 
-    <head>
-        <meta charset="UTF-8">
-        <title>Healthy skin</title>
-    </head>
-    <body>
 
-    <h3 th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]</h3>
-    <img th:src="@{/images/TacoCloud.png}"/>
-
-    <form method="GET" th:action="@{/design}" id="designForm">
-        <input type="submit" value="filtrate"/>
-    </form>
-
-    <form method="GET" th:action="@{/parameters}" id="parametersForm">
-        <input type="submit" value="parameters"/>
-    </form>
-
-    <form method="GET" th:action="@{/productList/favorite}" id="faveForm">
-        <input type="submit" value="favorites"/>
-    </form>
-
-    <form method="GET" th:action="@{/add}" id="addForm">
-        <input type="submit" value="add product"/>
-    </form>
+    <div class="content">
+        <div>
+            <p>znajdz produkt dla siebie: </p>
+        </div>
+        <div>
+            <button> button </button>
+        </div>
 
 
-    <form method="POST" th:action="@{/logout}" id="logoutForm">
-        <input type="submit" value="Logout"/>
-    </form>
+    </div>
+</div>
 
-    <a href="https://pl.freepik.com/wektory/edukacja">Edukacja plik wektorowy utworzone przez brgfx - pl.freepik.com</a>
-    <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik" >Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" >www.flaticon.com</a></div>
-    </body>
-    </html>
+<script>
+    $(document).ready(function() {
+        $(".menu-icon").on("click", function() {
+            $("nav ul").toggleClass("showing");
+        });
+    });
 
+    // Scrolling Effect
 
+    $(window).on("scroll", function() {
+        if($(window).scrollTop()) {
+            $('nav').addClass('black');
+        }
+
+        else {
+            $('nav').removeClass('black');
+        }
+    })
+</script>
 </body>
 </html>

@@ -42,8 +42,9 @@ public class RegistrationController {
     @PostMapping
     public String processRegistration( @Valid RegistrationForm registrationForm, Errors errors  ) {
 
-
+        System.out.println(registrationForm);
         if(errors.hasErrors()){
+            System.out.println(errors);
             System.out.println("FAIL");
             return "registration";
         }
