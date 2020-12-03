@@ -90,8 +90,8 @@
     span.validationError {
         color: red;
     }
-    span.alert {
-        color: red;
+    .alert {
+        color: darkred;
     }
     .sowaki{
         display: flex;
@@ -123,13 +123,18 @@
     });
 
 </script>
+<head>
+    <title>Logowanie</title>
+</head>
+<body>
 
 <form method="POST" th:action="@{/login}" id="loginForm">
-    <h1>Zaloguj się: </h1>
-    <!--<div th:if="${$error}" >
+    <div th:if="${error}"  class="alert">
         Niepoprawny login lub hasło.
-    </div>-->
-   <!-- <span class="alert" th:text="${alert}"></span>-->
+    </div>
+    <h1>Zaloguj się: </h1>
+
+    <!-- <span class="alert" th:text="${alert}"></span>-->
     <label>
         <p class="label-txt">NAZWA UŻYTKOWNIKA</p>
         <!--<input type="text" class="input">-->
@@ -150,3 +155,5 @@
     <button type="submit" value="Login">submit</button> <br>
     <p>New here? Click <a th:href="@{/register}">here</a> to register.</p>
 </form>
+</body>
+

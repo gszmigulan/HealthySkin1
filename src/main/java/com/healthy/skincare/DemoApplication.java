@@ -36,25 +36,17 @@ public class DemoApplication implements CommandLineRunner {
     private static final String FILE_NAME = "C:\\Users\\gszmi\\Desktop\\aplikacja\\skincare\\src\\main\\resources\\static\\data\\skladniki\\produkty.xlsx";
 
     public static void main(String[] args) {
-        //createTypes();
         SpringApplication.run(DemoApplication.class, args);
     }
     @Override
     public void run(String... args) throws Exception {
-        //nwm czy potrzebuje tej tabeli
         //jdbcTemplate.execute("DROP TABLE IF EXISTS typ_skladnika");
         // dodaje jeszcze raz tablice
         //createDatabaseEmpty();
-
-
-
        /* otwieranie pliku .xlsx  */
         //addIngredients(new FileInputStream(new File(FILE_NAME)));
-
-
     }
-
-    public void createDatabaseEmpty(){
+     /*   public void createDatabaseEmpty(){
         // TABLICA SKŁADNIKÓW
         jdbcTemplate.execute("DROP TABLE IF EXISTS skladniki");
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS skladniki(name VARCHAR(100) , " +
@@ -213,9 +205,9 @@ public class DemoApplication implements CommandLineRunner {
                         safe_min);
                 if(nazwa.length() > 2){
                     // tylko jeśli takiej nazwy jeszcze nie ma w bazie
-                    /*try{
-                       Ingredient ingredient2 = ingredientRepository.findByName(nazwa);
-                    }*/
+                    //try{
+                    //   Ingredient ingredient2 = ingredientRepository.findByName(nazwa);
+                    //}
                     //catch (NullPointerException e){
 
                     //if(ingredientRepository.isInBase(nazwa) == false){
@@ -238,7 +230,7 @@ public class DemoApplication implements CommandLineRunner {
             e.printStackTrace();
         }
     }
-
+*/
 
 
 }

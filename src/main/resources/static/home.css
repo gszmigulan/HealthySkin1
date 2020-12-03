@@ -158,13 +158,20 @@ nav ul li a {
         /*background-size: cover;*/
 
     }
-    .content{
+   /* .content{
         display: flex;
-        flex-direction: row;
-        align-self: flex-end;
-        align-items: flex-end;
+        flex-direction: column;
+        justify-content: center;
+        background: #8BC34A;
+        //align-self: flex-end;
+        //align-items: flex-end;
 
     }
+    .my-in-row{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }*/
 
     .ghost-button {
         display: inline-block;

@@ -17,6 +17,7 @@ public interface ProductRepository {
     Iterable<Product> findByInciW(SafeProduct safeProduct); // cis + wanted
     Iterable<Product> findByInciU(SafeProduct safeProduct); // cis + unwanted
     Iterable<Product> findByInciWU(SafeProduct safeProduct); // cis + wanted + unwanted
+    void deleteProduct(String brand, String name);
     //cis MIN
     //Product findById(String id);
     //Iterable<Product> findByBrand(String brand);

@@ -12,6 +12,7 @@ import java.util.List;
 public class SafeProduct {
     private Long id;
     private String name;
+    private String brand;
 
     private int comedogenic;
     private int irritation;

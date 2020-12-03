@@ -1,53 +1,196 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
+<!------ Include the above in your HEAD tag ---------->
 
+<style>
+
+    h1, h3{
+        font-family: sans-serif;
+    }
+    body {
+        background: #e6ccff;/*#C5E1A5;*/
+    }
+    form {
+        width: 60%;
+        margin: 60px auto;
+        background: #efefef;
+        padding: 60px 120px 80px 120px;
+        text-align: center;
+        -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+        box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+    }
+    label {
+        display: block;
+        position: relative;
+        margin: 40px 0px;
+    }
+    .label-txt {
+        position: absolute;
+        top: -1.6em;
+        padding: 10px;
+        font-family: sans-serif;
+        font-size: .8em;
+        letter-spacing: 1px;
+        color: rgb(120,120,120);
+        transition: ease .3s;
+    }
+    .input {
+        width: 100%;
+        padding: 10px;
+        background: transparent;
+        border: none;
+        outline: none;
+    }
+
+    .line-box {
+        position: relative;
+        width: 100%;
+        height: 2px;
+        background: #BCBCBC;
+    }
+
+    .line {
+        position: absolute;
+        width: 0%;
+        height: 2px;
+        top: 0px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #7300e6;/*#8BC34A;*/
+        transition: ease .6s;
+    }
+
+    .input:focus + .line-box .line {
+        width: 100%;
+    }
+
+    .label-active {
+        top: -3em;
+    }
+
+    button {
+        display: inline-block;
+        padding: 12px 24px;
+        background: rgb(220,220,220);
+        font-weight: bold;
+        color: rgb(120,120,120);
+        border: none;
+        outline: none;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: ease .3s;
+    }
+
+    button:hover {
+        background: #7300e6;/*#8BC34A;*/
+        color: #ffffff;
+    }
+
+    span.validationError {
+        color: red;
+    }
+    span.alert {
+        color: red;
+    }
+    .sowaki{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        padding-top: 20px;
+        padding-right: 150px;
+        padding-left: 50px;
+
+    }
+    .area-add{
+        background: rgb(220,220,220);
+        border-style: ridge;
+        border-radius: 5px;
+    }
+    .backHome{
+        display: flex;
+        justify-content: flex-start;
+    }
+    .warning-my{
+        color: darkred;
+    }
+
+
+</style>
+
+<script>
+
+    $(document).ready(function(){
+
+        $('.input').focus(function(){
+            $(this).parent().find(".label-txt").addClass('label-active');
+        });
+
+        $(".input").focusout(function(){
+            if ($(this).val() == '') {
+                $(this).parent().find(".label-txt").removeClass('label-active');
+            };
+        });
+
+    });
+
+</script>
 
 <head>
-    <meta charset="UTF-8">
-    <title>Dodaj składnik</title>
+    <title>dodawanie składnika</title>
 </head>
-<body>
+<form method="POST" th:action="@{/add/ingredient}" id="loginForm" th:object="${newIngr}" >
 
-<form method="POST" th:action="@{/add/ingredient}" th:object="${newIngr}" >
 
+    <div class="backHome">
+        <a th:href="@{/}" class="btn btn-outline-secondary">strona główna</a>
+    </div>
     <div th:each="warning: ${WarningsList}">
-        <span th:text="${warning}"></span>
+        <span class="warning-my" th:text="${warning}"></span>
     </div>
+    <h1 name="ingr-name" id="ingr-name" th:value="${name}" th:text="*{name}"> </h1>
 
-    <h1> nieznane składniki: </h1>
-
-
-    <div class="ingredient-group" id="proteins">
-        <span th:text="*{name}"></span> <br>
-        <h3>Dodaj jako nowy składnk: </h3>
-
-       <!-- <input type="text" th:field="*{name}" th:text="${name}" >-->
-        <span th:text="${name}"> </span>
-        <input type="text" th:field="*{types}" >
-        <input type="text" th:field="*{comed}" >
-        <input type="text" th:field="*{irr}" >
-        <input type="text" th:field="*{safety}" >
-        <input type="submit" name="new" class="button" value="dodaj" />
-        <h3>Dodaj jako inna nazwa istniejącego składnika: </h3>
-
-        <div >
-            <select class="form-control" th:field="${chose.existing}"  id="dropOperator">
-                <option value="0">select operator</option>
-                <option th:each="ingredients : ${ingrList}" th:value="${ingredients.rowid}" th:text="${ingredients.name}"></option>
-            </select>
+    <h3> Dodaj jako nowy składnik: </h3>
+    <label>
+        <p class="label-txt">RODZAJ SKŁADNIKA</p>
+        <input type="text" class="input" name="types" th:field="*{types}" >
+        <div class="line-box">
+            <div class="line"></div>
         </div>
-
-        <input type="submit" name="connect" class="button" value="połącz" />
-
-
-
-
+    </label>
+    <label>
+        <p class="label-txt">COMEDOGENICZNOŚĆ (0-5)</p>
+        <input type="text" class="input" name="comed" th:field="*{comed}" >
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </label>
+    <label>
+        <p class="label-txt">IRYTACJA (0-5)</p>
+        <input type="text" class="input" name="irr" th:field="*{irr}" >
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </label>
+    <label>
+        <p class="label-txt">NIEBEZPIECZEŃSTWO (1-10)</p>
+        <input type="text" class="input" name="safety" th:field="*{safety}" >
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </label>
+    <button type="submit" name="new" value="dodaj składnik">Dodaj</button>
+    <br>
+    <h3>Dodaj jako inna nazwa istniejącego składnika: </h3>
+    <div >
+        <select class="form-control" th:field="${chose.existing}"  id="dropOperator">
+            <option value="0">select operator</option>
+            <option th:each="ingredients : ${ingrList}" th:value="${ingredients.rowid}" th:text="${ingredients.name}"></option>
+        </select>
     </div>
-    <!-- wyświetlam listę produktów z każdym z przyciskiem "skład" otwerający okno ze składem-->
+    <br>
+    <button type="submit" name="connect"  value="połącz">Połącz</button>
+
 </form>
-
-
-
-</body>
-</html>

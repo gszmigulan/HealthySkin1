@@ -1,87 +1,200 @@
-<!DOCTYPE html>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
+<!------ Include the above in your HEAD tag ---------->
+
+<style>
+
+
+    body {
+        background: #e6ccff;/*#C5E1A5;*/
+    }
+    form {
+        width: 60%;
+        margin: 60px auto;
+        background: #efefef;
+        padding: 60px 120px 80px 120px;
+        text-align: center;
+        -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+        box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+    }
+    label {
+        display: block;
+        position: relative;
+        margin: 40px 0px;
+    }
+    .label-txt {
+        position: absolute;
+        top: -1.6em;
+        padding: 10px;
+        font-family: sans-serif;
+        font-size: .8em;
+        letter-spacing: 1px;
+        color: rgb(120,120,120);
+        transition: ease .3s;
+    }
+    .input {
+        width: 100%;
+        padding: 10px;
+        background: transparent;
+        border: none;
+        outline: none;
+    }
+
+    .line-box {
+        position: relative;
+        width: 100%;
+        height: 2px;
+        background: #BCBCBC;
+    }
+
+    .line {
+        position: absolute;
+        width: 0%;
+        height: 2px;
+        top: 0px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #7300e6;/*#8BC34A;*/
+        transition: ease .6s;
+    }
+
+    .input:focus + .line-box .line {
+        width: 100%;
+    }
+
+    .label-active {
+        top: -3em;
+    }
+
+    button {
+        display: inline-block;
+        padding: 12px 24px;
+        background: rgb(220,220,220);
+        font-weight: bold;
+        color: rgb(120,120,120);
+        border: none;
+        outline: none;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: ease .3s;
+    }
+
+    button:hover {
+        background: #7300e6;/*#8BC34A;*/
+        color: #ffffff;
+    }
+
+    span.validationError {
+        color: red;
+    }
+
+    .area-add{
+        background: rgb(220,220,220);
+        border-style: ridge;
+        border-radius: 5px;
+    }
+    .alert-my{
+        color: darkred;
+    }
+
+    .backHome{
+        display: flex;
+        justify-content: flex-start;
+    }
+
+
+</style>
+
+<script>
+
+    $(document).ready(function(){
+
+        $('.input').focus(function(){
+            $(this).parent().find(".label-txt").addClass('label-active');
+        });
+
+        $(".input").focusout(function(){
+            if ($(this).val() == '') {
+                $(this).parent().find(".label-txt").removeClass('label-active');
+            };
+        });
+
+    });
+
+</script>
+
 <head>
     <title>dodawanie produktu</title>
-    <link rel="stylesheet" th:href="@{/styles.css}" />
 </head>
 
 
-
-<body>
-
-<span th:text="${alert}"> </span> <br/>
-
-<h1>Dodaj nowy kosmetyk</h1>
-
-<form th:action="@{/}" id="homeForm">
-    <input type="submit" value="strona główna"/>
-</form>
-
-<form method="POST" th:action="@{/add}"th:object="${productData}">
+<form method="POST" th:action="@{/add}" id="loginForm" th:object="${productData}">
 
 
-    <div>
+    <div class="backHome">
+        <a th:href="@{/}" class="btn btn-outline-secondary">strona główna</a>
+    </div>
+    <span  class="alert-my" th:text="${alert}"> </span> <br/>
+    <h1>Dodaj nowy kosmetyk</h1>
 
-        <h3>Producent:</h3>
-        <label for="brand">Producent: </label>
-        <input type="text" th:field="*{brand}"/>
+    <label>
+        <p class="label-txt">PRODUCENT</p>
+        <input type="text" class="input" name="brand" th:field="*{brand}"/>
         <span class="validationError"
               th:if="${#fields.hasErrors('brand')}"
               th:errors="*{brand}">Branad Error</span>
-        <br/>
-        <!--<input type="text" th:field="*{brand}"/>
-        <span class="validationError"
-              th:if="${#fields.hasErrors('brand')}"
-              th:errors="*{brand}">brand Error</span>
-        <br/>-->
 
-        <!--<span th:text="${#fields.hasErrors('brand')}">XXX</span>
-        <span class="validationError"
-              th:if="${#fields.hasErrors('name')}"
-              th:errors="*{name}">Name Error</span>-->
-
-        <br/>
-        <h3>Nazwa:</h3>
-        <label for="name">Producent: </label>
-        <input type="text" th:field="*{name}"/>
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </label>
+    <label>
+        <p class="label-txt">NAZWA</p>
+        <input type="text" class="input" name="name" th:field="*{name}"/>
         <span class="validationError"
               th:if="${#fields.hasErrors('name')}"
               th:errors="*{name}">name Error</span>
-        <br/>
-        <!--<input type="text" th:field="*{name}"/>
-        <span class="validationError"
-              th:if="${#fields.hasErrors('name')}"
-              th:errors="*{name}">Name Error</span>
-        <br/>-->
-        <br/>
-        <h3>Skład:</h3>
-        <textarea rows="4" cols="50" th:field="*{ingredients}"/>
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </label>
+
+    <label>
+        <p class="label-txt">SKŁAD</p> <br>
+        <textarea name="inciList" class="area-add" rows="4" cols="50" th:field="*{ingredients}"/>
         <span class="validationError"
               th:if="${#fields.hasErrors('ingredients')}"
               th:errors="*{ingredients}">ingredients Error</span>
-        <br/>
-        <!--<div th:each=" productType : ${productType}">
-            <input name="unwanted" type="checkbox" th:value="${unwanted.id}" />
-            <span th:text="${unwanted.name}">INGREDIENT</span><br/>
-        </div>-->
-        <br/>
-        <button type="submit" name="add" value="dodaj produkt">Submit your taco</button>
+    </label>
 
-         <br>
-        <tr th:each="ingredient : ${unknownList}">
-            <p>nieznany składnik: </p>
-            <span th:text="${ingredient.name}">, </span>
-
-            <!-- <input type="submit" name="add" class="button" th:value="${ingredient.name}" value="dodaj składnik" />-->
-            <button type="submit" name="addIngr" th:value="${ingredient.name}" > dodaj składnik</button>
-
-
-            <br>
-        </tr>
-
-
+    <button type="submit" name="add" value="dodaj produkt">Dodaj</button>
+    <div th:if="${not #lists.isEmpty(unknownList)}">
+        <h3>nieznane składniki: </h3>
     </div>
+    <div class="table-responsive" th:if="${not #lists.isEmpty(unknownList)}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col"> składnik:</th>
+                <th scope="col">   </th>
+            </tr>
+            </thead>
+            <tbody>
+            <div th:each="ingredient : ${unknownList}">
+                <tr >
+                    <td th:text="${ingredient.getName()}"></td>
+
+                    <td>
+                        <button type="submit" name="addIngr" th:value="${ingredient.name}" > dodaj </button> <br/>
+                    </td>
+                </tr>
+
+            </div>
+            </tbody>
+        </table>
+    </div>
+
 </form>
-</body>
-</html>

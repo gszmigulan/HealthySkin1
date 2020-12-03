@@ -167,10 +167,13 @@
 
 
 </script>
+<head>
+    <title>Rejestracja</title>
+</head>
 
 <form method="POST" th:action="@{/register}" id="registerForm" th:object="${registrationForm}">
     <h1>Zarejestruj się: </h1>
-    <span class="alert" th:text="${alert}"></span>
+    <span class="alert" name="alert" th:text="${alert}"></span>
     <label>
         <p class="label-txt">NAZWA UŻYTKOWNIKA</p>
         <!--<input type="text" class="input">-->
@@ -205,7 +208,7 @@
     </label>
     <label>
         <p class="label-txt">PEŁNE IMIE</p>
-        <input class="input" type="text" th:field="*{fullname}"/>
+        <input class="input" type="text"  name="fullname" th:field="*{fullname}"/>
         <span class="validationError"
               th:if="${#fields.hasErrors('fullname')}"
               th:errors="*{fullname}">Name Error</span>
@@ -219,19 +222,19 @@
             <div class="sowaki">
                 <div>
                     <span>comedogeniczność : </span>
-                    <input type="range" min="0" max="5"  value="5" class="slider" id="vol4" th:field="*{comed}">
+                    <input type="range" min="0" max="5"  value="5" class="slider" name="comed" id="vol4" th:field="*{comed}">
                     <span id="non_comed_id"></span>
                 </div>
 
                 <div>
                     <span>irytacja : </span>
-                    <input type="range" min="0" max="5" value="5" class="slider" id="irr_id" th:field="*{irr}">
+                    <input type="range" min="0" max="5" value="5" class="slider" name="irr" id="irr_id" th:field="*{irr}">
                     <span id="irr_v"></span>
                 </div>
 
                 <div>
                     <span>bezpieczeństwo : </span>
-                    <input type="range" min="1" max="10" value="10" class="slider" id="safe_id" th:field="*{safety}">
+                    <input type="range" min="1" max="10" value="10" class="slider"  name=safety id="safe_id" th:field="*{safety}">
                     <span id="safe_v"></span>
                 </div>
 

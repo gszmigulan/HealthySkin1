@@ -11,11 +11,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Responsive Sticky Navbar</title>
+    <title>Healthy Skin</title>
     <link rel="stylesheet" href="home.css">
   <!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">-->
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 </head>
+<style>
+    .content{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 70%;
+        color: rebeccapurple;
+        font-family: "Helvetica Neue",sans-serif;
+        font-weight: lighter;
+        /*align-self: flex-end;
+        align-items: flex-end;*/
+
+    }
+    .my-in-row{
+
+        width: 80%;
+        display: flex;
+        color: rebeccapurple;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    .my-contener {
+        width: 60%;
+        margin: 60px auto;
+        background: #efefef;
+        padding: 60px 120px 80px 120px;
+        text-align: center;
+        -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+        box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+    }
+
+</style>
 <body>
 <div class="wrapper">
     <header>
@@ -24,7 +57,7 @@
                 <i class="fa fa-bars fa-2x"></i>
             </div>
             <div class="logo">
-                LOGO
+                HealthySkin
             </div>
             <div class="menu">
                 <ul>
@@ -59,23 +92,25 @@
         </nav>
     </header>
     <img class="MyPicture123"  alt="Cinque Terre" >
-    <div class="myPicture">
+   <!-- <div class="myPicture">
         <h3 th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]</h3>
 
+    </div>-->
+    <div class="my-contener">
+        <div class="content">
+            <h3 th:inline="text" name="powitanie">Witaj [[${#httpServletRequest.remoteUser}]] !</h3>
+            <div>
+                <p>Bezpieczeństwo twojej skóry jest dla nas priorytetem! </p>
+                <p>Ustaw swoje indywidualne parametry bezpieczeństwa użytkowania. </p>
+                <p>Modyfikuj wyszukiwanie jak chcesz. Znajdz odpowiednie dla Ciebie produkty. Dodaj je do ulubionych. Komentuj aby pamiętać jak się one u Ciebie sprawdzają.
+                    Pamiętaj, że każda skóra jest inna. HealthySkin pomoże ci dobrać produkty idealne dla Ciebie! </p>
+            </div>
+        </div>
     </div>
 
-
-
-    <div class="content">
-        <div>
-            <p>znajdz produkt dla siebie: </p>
-        </div>
-        <div>
-            <button> button </button>
-        </div>
-
-
-    </div>
+    <footer>
+        <a href='https://pl.freepik.com/wektory/piekno'>Piękno plik wektorowy utworzone przez pikisuperstar - pl.freepik.com</a>
+    </footer>
 </div>
 
 <script>

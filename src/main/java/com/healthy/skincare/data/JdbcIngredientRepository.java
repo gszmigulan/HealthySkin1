@@ -25,7 +25,7 @@ public class JdbcIngredientRepository implements IngredientRepository {
     }
 
     @Override
-    public void/*Ingredient*/ save(Ingredient ingredient){
+    public void save(Ingredient ingredient){
         // dodawać tylko jeśli składnik o tej nazwie jeszcze nie istnieje
         try {
             long IngredientId = saveIngredientInfo(ingredient);
@@ -37,6 +37,16 @@ public class JdbcIngredientRepository implements IngredientRepository {
         catch (IllegalStateException e){
             System.out.println("nie dodano");
         }
+    }
+
+    @Override
+    public void deleteIngredient(String name){
+        Ingredient ingredient = findByName(name);
+        jdbc.update("delete from skladniki where name = ?" ,name);
+        jdbc.update("delete from produkty_sklad where id_ingredient = ? ", ingredient.getRowid());
+        jdbc.update("delete from skladniki_nazwy where id_ingredient = ?", ingredient.getRowid());
+        jdbc.update("delete from user_unwanted where id_ingredient = ?", ingredient.getRowid());
+        jdbc.update("delete from user_wanted where id_ingredient = ?", ingredient.getRowid());
     }
 
     @Override
@@ -108,11 +118,6 @@ public class JdbcIngredientRepository implements IngredientRepository {
         }catch (EmptyResultDataAccessException e){
 
         }
-        //if(i.){System.out.println(" nie ma ");}
-        //else {return -1;}
-        //Statement stm = co
-       // ResultSet s = jdbc.query("select * from skladniki where name = " + ingredient.getName());
-        //String exists = jdbc.executeQuery("select type from skladniki where name = "  + ingredient.name );
         PreparedStatementCreator psc =
                 new PreparedStatementCreatorFactory(
                         "insert into skladniki(name, type, comed_max, comed_min, irr_max, irr_min, safety_max, safety_min)" +
@@ -141,18 +146,6 @@ public class JdbcIngredientRepository implements IngredientRepository {
 
     }
     private void save_name(Ingredient ingredient){
-        /*PreparedStatementCreator psc =
-                new PreparedStatementCreatorFactory(
-                        "insert into skladniki_nazwy(name, id_skladnika) values (?, ?)",
-                        Types.VARCHAR, Types.INTEGER
-                ).newPreparedStatementCreator(
-                        Arrays.asList(
-                                ingredient.getName(),
-                                ingredient.getRowid()
-                        )
-                );
-        KeyHolder keyHolder = new GeneratedKeyHolder();*/
-        //jdbc.update(psc, keyHolder);
         jdbc.update("insert into skladniki_nazwy (name, id_ingredient) values (?,?)",
                 ingredient.getName(), ingredient.getRowid()
         );

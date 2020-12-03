@@ -1,64 +1,358 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
+<!------ Include the above in your HEAD tag ---------->
 
-<form th:action="@{/}" id="homeForm">
-    <input type="submit" value="strona główna"/>
-</form>
+<style>
+
+
+    body {
+        background: #e6ccff;/*#C5E1A5;*/
+    }
+    form {
+        width: 80%;
+        margin: 60px auto;
+        background: #efefef;
+        padding: 60px 50px 80px 50px;
+        text-align: center;
+        -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+        box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+    }
+    label {
+        display: block;
+        position: relative;
+        margin: 40px 0px;
+    }
+    .label-txt {
+        position: absolute;
+        top: -1.6em;
+        padding: 10px;
+        font-family: sans-serif;
+        font-size: .8em;
+        letter-spacing: 1px;
+        color: rgb(120,120,120);
+        transition: ease .3s;
+    }
+    .input {
+        width: 100%;
+        padding: 10px;
+        background: transparent;
+        border: none;
+        outline: none;
+    }
+
+    .line-box {
+        position: relative;
+        width: 100%;
+        height: 2px;
+        background: #BCBCBC;
+    }
+
+    .line {
+        position: absolute;
+        width: 0%;
+        height: 2px;
+        top: 0px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #7300e6;/*#8BC34A;*/
+        transition: ease .6s;
+    }
+
+    .input:focus + .line-box .line {
+        width: 100%;
+    }
+
+    .label-active {
+        top: -3em;
+    }
+
+    button {
+        display: inline-block;
+        padding: 12px 24px;
+        background: rgb(220,220,220);
+        font-weight: bold;
+        color: rgb(120,120,120);
+        border: none;
+        outline: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: ease .3s;
+    }
+
+    button:hover {
+        background: #7300e6;/*#8BC34A;*/
+        color: #ffffff;
+    }
+
+    span.validationError {
+        color: red;
+    }
+    span.alert {
+        color: red;
+    }
+
+    .inTable{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+
+    }
+    .tale-shape{
+        padding-left: 70px;
+        padding-right: 70px;
+    }
+    .backHome{
+        display: flex;
+        justify-content: flex-start;
+
+    }
+    .sowaki{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        padding-top: 20px;
+        /*padding-right: 250px;
+        padding-left: 50px;*/
+
+    }
+    .table-responsive{
+        border-style: outset;
+        border-color:  #eb99ff;
+        border-radius: 5px;
+    }
+    .comment{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        padding-bottom: 5px;
+    }
+    .comment-inside{
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        background: rgb(220,220,220);
+        border-style: ridge;
+        border-radius: 5px;
+        height: auto;
+        align-content: flex-end;
+        align-self: flex-end;
+        /*padding-top: 20px;
+        padding-bottom: 1px;*/
+    }
+
+    .comment-inside-area{
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        background: rgb(220,220,220);
+        border-style: ridge;
+        border-radius: 5px;
+        height: auto;
+       /* align-content: flex-end;
+        align-self: flex-end;*/
+        /*padding-top: 20px;
+        padding-bottom: 1px;*/
+    }
+    .comment-info{
+        color:white;
+        background: rgb(120,120,120);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        /*align-self: flex-end;*/
+    }
+    .comment-score{
+        display: flex;
+        flex-direction: row;
+    }
+    .new-comment-score{
+        display: flex;
+        flex-direction: row;
+        width: 80%;
+        justify-content: space-around;
+    }
+    .new-comment{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        flex-direction: column;
+    }
+
+
+    .slider {
+        -webkit-appearance: none;
+        width: 200px;
+        height: 2px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+    }
+
+    .slider:hover {
+        opacity: 1;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: #7300e6;
+        cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        background: #7300e6;
+        cursor: default;
+    }
+    .in-one-row{
+
+        justify-content: space-around;
+        display: flex;
+        flex-direction: row;
+    }
+    .upp-back{
+        display: flex;
+        justify-content: space-between;
+        width: 70%;
+    }
+
+
+
+</style>
 
 <head>
-    <meta charset="UTF-8">
-    <title>Produkt "${}"</title>
+    <title>Produkt </title>
 </head>
-<body>
+<script>
+
+    $(document).ready(function(){
+
+        $('.input').focus(function(){
+            $(this).parent().find(".label-txt").addClass('label-active');
+        });
+
+        $(".input").focusout(function(){
+            if ($(this).val() == '') {
+                $(this).parent().find(".label-txt").removeClass('label-active');
+            };
+        });
+
+    });
+
+</script>
+
 <form method="POST" th:action="@{/productList/one}" th:object="${commentU}">
-    <h1 th:text="${product.getBrand()}"></h1>
-    <h1 th:text="${product.getName()}"></h1>
-    <input type="submit" name="like" th:text="${liked}" class="button" value="like" />
-
-    <h1> lista składników:  </h1>
-
-
-    <div class="ingredient-group" id="proteins">
-        <h3>Znalezione produkty:</h3>
-        <div th:each="skladnik : ${ingredients}">
-            <span th:text="${skladnik.ingredient.getName()}">, </span>
-            <span th:text="${skladnik.ingredient.getType()}"> </span>
-            <span th:text="${skladnik.comed}"> </span>
-            <span th:text="${skladnik.irr}"> </span>
-            <span th:text="${skladnik.safety}"> </span>
-            <!-- jeśli to jest true to ma cis większe niż w parameters  i
-            podświetlam to na żółto jako warning -->
-            <span th:text="${skladnik.cisHigher}"> </span>
-            <br/>
-
+    <div class="upp-back">
+        <div class="in-one-row">
+            <div class="backHome">
+                <a th:href="@{/}" class="btn btn-outline-secondary">strona główna</a>
+            </div>
+            <div class="backHome">
+                <a th:href="@{/productList/favorite}" class="btn btn-outline-secondary">ulubione</a>
+            </div>
         </div>
-
-        <h3>komentarze :</h3>
-        <div th:each="comment : ${comments}">
-            <span th:text="${comment.getScore()}">, </span>
-            <span th:text="${comment.getText()}"> </span>
-            <span th:text="${comment.getDate()}"> </span>
-            <span th:text="${comment.getId()}"> </span>
-            <button type="submit" name="delete" th:value="${comment.getId()}" > x </button>
-            <!--<input type="submit" name="delete" text=" usuń" th:value="${comment.getId()}" /> <br/>-->
-            <br/>
-
-        </div>
-        <h3>Dodaj komentarz: </h3>
-        <input type="range" id="vol3" name="score" step ="1" min="1" max="10" th:field="*{score}" >
-        <textarea rows="4" cols="50" th:field="*{text}"></textarea>
-        <input type="submit" name="comment" class="button" value="comment" />
-
-
-
     </div>
-    <!-- wyświetlam listę produktów z każdym z przyciskiem "skład" otwerający okno ze składem-->
+    <br>
+    <div class="in-one-row">
+        <div>
+            <h1 th:text="${product.getBrand()}"></h1>
+            <h3 th:text="${product.getName()}"></h3>
+        </div>
+        <button type="submit" name="like" th:value="${liked}" th:text="${liked}" > </button>
+    </div>
+
+    <br>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col"> składnik</th>
+                 <th scope="col">funkcja</th>
+                <th scope="col">comed</th>
+                <th scope="col">irr</th>
+                <th scope="col">safety</th>
+            </tr>
+            </thead>
+            <tbody>
+            <div th:each="skladnik : ${ingredients}">
+                <tr th:if= "${skladnik.cisU=='K'} " class="table-success">
+                    <td th:text="${skladnik.ingredient.getName()}"></td>
+                    <td th:text="${skladnik.ingredient.getType()}"></td>
+                    <td th:text="${skladnik.comed}"></td>
+                    <td th:text="${skladnik.irr}"></td>
+                    <td th:text="${skladnik.safety}"></td>
+                </tr>
+                <tr th:if= "${skladnik.cisU=='CIS'} " class="table-warning">
+                    <td th:text="${skladnik.ingredient.getName()}"></td>
+                    <td th:text="${skladnik.ingredient.getType()}"></td>
+                    <td th:text="${skladnik.comed}"></td>
+                    <td th:text="${skladnik.irr}"></td>
+                    <td th:text="${skladnik.safety}"></td>
+                </tr>
+                <tr th:if= "${skladnik.cisU=='U'} " class="table-danger">
+                    <td th:text="${skladnik.ingredient.getName()}"></td>
+                    <td th:text="${skladnik.ingredient.getType()}"></td>
+                    <td th:text="${skladnik.comed}"></td>
+                    <td th:text="${skladnik.irr}"></td>
+                    <td th:text="${skladnik.safety}"></td>
+                </tr>
+            </div>
+            </tbody>
+        </table>
+    </div>
+
+    <h3> moje komentarze :</h3>
+    <div  class="comment" th:each="comment : ${comments}">
+        <div class="comment-inside">
+            <span th:text="${comment.getText()}"> </span>
+            <div class="comment-info">
+                <div class="comment-score">
+                    <p>moja ocena: </p>
+                    <span th:text="${comment.getScore()}">, </span>
+                    <p>/10</p>
+                </div>
+                <span th:text="${comment.getDate()}"> </span>
+            </div>
+        </div>
+
+        <button type="submit" name="delete" th:value="${comment.getId()}" > x </button>
+        <br/>
+    </div>
+
+    <br>
+    <h3>Dodaj komentarz: </h3>
+    <div class="new-comment">
+        <textarea class="comment-inside-area" rows="4" cols="50" th:field="*{text}"></textarea>
+        <br>
+        <div class="new-comment-score">
+            <div>
+                <span>moja ocena : </span>
+                <input type="range" min="1" max="10" value="10" class="slider" id="vol1" th:field="*{score}">
+                <span id="value1"></span>
+            </div>
+            <div>
+                <button type="submit" name="comment" value="comment" > dodaj </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        var slider= document.getElementById("vol1");
+        var output = document.getElementById("value1");
+        output.innerHTML = slider.value;
+        slider.oninput = function() {
+            output.innerHTML = this.value;
+        }
+    </script>
 </form>
-
-
-
-
-
-</body>
-</html>

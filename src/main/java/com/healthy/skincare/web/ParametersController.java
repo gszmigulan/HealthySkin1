@@ -88,7 +88,7 @@ public class ParametersController {
     @PostMapping(params = "deleteW")
     public String deleteWanted(HttpServletRequest request, @Valid SafeProduct design, Errors errors, @ModelAttribute SafeProduct safeProduct, Principal principal){
 
-        System.out.println("DELETE : " + request.getParameter("deleteW"));
+        //System.out.println("DELETE : " + request.getParameter("deleteW"));
         Long ingr_id = Long.parseLong(request.getParameter("deleteW"));
         User user = userRepository.findByUsername(principal.getName());
         userRepository.deleteUserWanted(user.getId(), ingr_id);
@@ -100,7 +100,7 @@ public class ParametersController {
     @PostMapping(params = "deleteU")
     public String deleteUnwanted(HttpServletRequest request, @Valid SafeProduct design, Errors errors, @ModelAttribute SafeProduct safeProduct, Principal principal){
 
-        System.out.println("DELETE : " + request.getParameter("deleteW"));
+        ///System.out.println("DELETE : " + request.getParameter("deleteW"));
         Long ingr_id = Long.parseLong(request.getParameter("deleteU"));
         User user = userRepository.findByUsername(principal.getName());
         userRepository.deleteUserUnwanted(user.getId(), ingr_id);
@@ -121,19 +121,17 @@ public class ParametersController {
         if(isOk){
             userRepository.setUserWanted(user.getId(), design.getNextWanted());
         }
-
-
-
         return "redirect:/parameters";
     }
 
     @PostMapping(params = "addUnwanted")
     public String addToUnwanted(@Valid SafeProduct design, Errors errors, @ModelAttribute SafeProduct safeProduct, Principal principal){
 
+        //System.out.println("nextUnwaned: " + design.getNextUnwanted());
+        //System.out.println("lsta:" + design.getUnwanted());
         safeProduct.setUnwanted(design.getUnwanted());
         User user = userRepository.findByUsername(principal.getName());
         boolean isOk = c.addIngrWU(design.getNextUnwanted(), design.getUnwanted());
-
         List<String> warnings= c.checkIfIsOnAnother(safeProduct.getUnwanted(), design.getNextWanted(), "ERROR: ten składnik nie może być dodany bo jest już na liście szukanych");
         safeProduct.setWarnings(warnings);
         if(!warnings.isEmpty()){isOk = false;}

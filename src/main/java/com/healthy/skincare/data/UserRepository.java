@@ -17,7 +17,9 @@ public interface UserRepository {
     void deleteUserUnwanted(Long id,Long id_ingredient);
     void setUserWanted(Long id_user, String id_wanted);
     void setUserUnwanted(Long id_user, String id_unwanted);
-    public void deleteComment(Long id);
+    void deleteComment(Long id);
+    void deleteUser(String username);
+
 
     List<String> getWantedList(Long id);
     List<String> getUnwantedList(Long id);

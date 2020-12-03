@@ -193,12 +193,14 @@
 </script>
 
 
-
+<head>
+    <title>Moje ustawienia</title>
+</head>
 
 
 <form method="POST"  th:object="${design}">
     <div class="backHome">
-        <a th:href="@{/}" class="btn btn-outline-secondary">strona główna</a>
+        <a th:href="@{/}" name="home" class="btn btn-outline-secondary">strona główna</a>
     </div>
 
     <div class="warnings" th:each="warning: ${WarningsList}">
@@ -207,25 +209,13 @@
 
 
     <h1>Zmień swoje ustawienia: </h1>
-    <!--<span class="alert" th:text="${alert}"></span>-->
-
-    <!--<label>
-        <p class="label-txt">POWTÓRZ HASŁO</p>
-        <input class="input" type="password"  name="confirm" th:field="*{confirm}"/>
-        <span class="validationError"
-              th:if="${#fields.hasErrors('confirm')}"
-              th:errors="*{confirm}">Password Error</span>
-        <div class="line-box">
-            <div class="line"></div>
-        </div>
-    </label>-->
     <label>
         <p class="label-txt">POTRZEBY MOJEJ SKÓRY:</p>
         <div class="sowaki-outer">
             <div class="sowaki">
                 <div>
                     <span>comedogeniczność : </span>
-                    <input type="range" min="0" max="5" value="5" class="slider" id="vol4" th:field="*{comedogenic}">
+                    <input type="range" min="0" max="5" value="5" class="slider" id="vol4" name ="comed" th:field="*{comedogenic}">
                     <span id="non_comed_id"></span>
                 </div>
 
@@ -314,7 +304,7 @@
                 </div>
 
                 <div th:each="userU: ${design.unwanted}">
-                    <div class="ListProduct">
+                    <div  class="ListProduct">
                         <span th:text="${userU.name}"></span>
 
                         <button type="submit" name="deleteU" th:value="${userU.rowid}" class="close" aria-label="Close">

@@ -228,6 +228,7 @@ public class SafetyController {
             return "redirect:/";
         }
         safeProduct.setName(design.getName());
+        safeProduct.setBrand(design.getBrand());
         safeProduct.setComedogenic(design.getComedogenic());
         safeProduct.setIrritation(design.getIrritation());
         safeProduct.setSafety(design.getSafety());

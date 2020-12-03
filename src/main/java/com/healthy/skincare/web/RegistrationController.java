@@ -45,6 +45,7 @@ public class RegistrationController {
         System.out.println(registrationForm);
         if(errors.hasErrors()){
             System.out.println(errors);
+            alert= "ERROR";
             System.out.println("FAIL");
             return "registration";
         }
@@ -52,12 +53,14 @@ public class RegistrationController {
             alert =  "hasła różną się";
             return "redirect:/register";//"registration";
         }
+        try{
+            User u = userRepo.findByUsername(registrationForm.getUsername());
+            if(u.getUsername().equals(registrationForm.getUsername())){
+                alert = "użytkownik o takiej nazwie już istneje";
+                return "redirect:/register";
+            }
+        }catch (NullPointerException e ){}
 
-        User u = userRepo.findByUsername(registrationForm.getUsername());
-        if(u.getUsername().equals(registrationForm.getUsername())){
-            alert = "użytkownik o takiej nazwie już istneje";
-            return "redirect:/register";
-        }
 
 
         userRepo.save(registrationForm.toUser(passwordEncoder));

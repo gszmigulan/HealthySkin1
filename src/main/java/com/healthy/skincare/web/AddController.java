@@ -87,16 +87,16 @@ public class AddController {
         System.out.println("POST PRODUCT DATA: " + productData);
 
         if(errors.hasErrors()){
-            alert= "wszystkie pola muszą być wypełnione";
+            alert= "ERROR: wszystkie pola muszą być wypełnione";
             System.out.println("errors");
             return "redirect:/add";
         }
         Product prod = productRepository.findByBrandAndName(productData.getBrand(), productData.getName());
         System.out.println(prod.getName());
         if(!prod.getName().equals("-1")){
-            alert = "ten produkt jest już w bazie";
+            alert = "ERROR: ten produkt jest już w bazie";
             // błąd, że taki kosmetyk już jest w bazie
-            return "addingForm";
+            return "redirect:/add";
         }
 
         // tu dodaje funkcję przetwarzające dane i wstawiające do bazy danych

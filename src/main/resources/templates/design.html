@@ -1,213 +1,344 @@
-<!DOCTYPE html>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
+<!------ Include the above in your HEAD tag ---------->
+
+<style>
+
+    body {
+        background: #e6ccff;/*#C5E1A5;*/
+    }
+    form {
+        width: 70%;
+        margin: 60px auto;
+        background: #efefef;
+        padding: 60px 50px 80px 50px;
+        text-align: center;
+        -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+        box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+    }
+    label {
+        display: block;
+        position: relative;
+        margin: 40px 0px;
+    }
+    .label-txt {
+        position: absolute;
+        top: -1.6em;
+        padding: 10px;
+        font-family: sans-serif;
+        font-size: .8em;
+        letter-spacing: 1px;
+        color: rgb(120,120,120);
+        transition: ease .3s;
+    }
+    .input {
+        width: 100%;
+        padding: 10px;
+        background: transparent;
+        border: none;
+        outline: none;
+    }
+
+    .line-box {
+        position: relative;
+        width: 100%;
+        height: 2px;
+        background: #BCBCBC;
+    }
+
+    .line {
+        position: absolute;
+        width: 0%;
+        height: 2px;
+        top: 0px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #7300e6;/*#8BC34A;*/
+        transition: ease .6s;
+    }
+
+    .input:focus + .line-box .line {
+        width: 100%;
+    }
+
+    .label-active {
+        top: -3em;
+    }
+
+    button {
+        display: inline-block;
+        padding: 12px 24px;
+        background: rgb(220,220,220);
+        font-weight: bold;
+        color: rgb(120,120,120);
+        border: none;
+        outline: none;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: ease .3s;
+    }
+
+    button:hover {
+        background: #7300e6;/*#8BC34A;*/
+        color: #ffffff;
+    }
+
+    span.validationError {
+        color: red;
+    }
+    span.alert {
+        color: red;
+    }
+    .sowaki{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        padding-top: 20px;
+        /*padding-right: 250px;
+        padding-left: 50px;*/
+
+    }
+    .sowaki-outer{
+        display: flex;
+        flex-direction: row;
+        /*align-items: center;*/
+        justify-content: center;
+    }
+    .ListProduct{
+        display: flex;
+        flex-direction: row;
+    }
+    .warnings{
+        color: darkred;
+    }
+    .backHome{
+        display: flex;
+        justify-content: flex-start;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .slider {
+        -webkit-appearance: none;
+        width: 200px;
+        height: 2px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+    }
+
+    .slider:hover {
+        opacity: 1;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: #7300e6;
+        cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        background: #7300e6;
+        cursor: default;
+    }
+
+
+</style>
+
+<script>
+
+    $(document).ready(function(){
+
+        $('.input').focus(function(){
+            $(this).parent().find(".label-txt").addClass('label-active');
+        });
+
+        $(".input").focusout(function(){
+            if ($(this).val() == '') {
+                $(this).parent().find(".label-txt").removeClass('label-active');
+            };
+        });
+
+    });
+
+
+
+</script>
+
+
+
 <head>
-    <title>Filtrowanie po składzie</title>
-    <link rel="stylesheet" th:href="@{/styles.css}" />
+    <title>szukaj produktów</title>
 </head>
 
-<body>
-<h1>Dopasuj kosmetyk do swojej skóry</h1>
+<form method="POST"  th:object="${design}">
+    <div class="backHome">
+        <a th:href="@{/}" class="btn btn-outline-secondary">strona główna</a>
+    </div>
 
-<form th:action="@{/}" id="homeForm">
-    <input type="submit" value="strona główna"/>
-</form>
-
-<form method="POST" th:object="${design}">
-
-    <!-- tu jest jakiś błąd z ingredients   <span
-    może jak zmienie wszystkie ingredients na unwanted (bo takie pole jest w safeproduct ) to będzie działać-->
-    <span class="validationError"
-          th:if="${#fields.hasErrors('unwanted')}"
-          th:errors="*{unwanted}">Ingredient Error</span>
-
-    <div th:each="warning: ${design.warnings}">
+    <div class="warnings" th:each="warning: ${design.warnings}">
         <span th:text="${warning}"></span>
     </div>
 
 
+    <h1>Ustawienia wyszukiwania: </h1>
+    <label>
+        <p class="label-txt">POTRZEBY MOJEJ SKÓRY:</p>
+        <div class="sowaki-outer">
+            <div class="sowaki">
+                <div>
+                    <span>comedogeniczność : </span>
+                    <input type="range" min="0" max="5" value="5" class="slider" id="vol4" th:field="*{comedogenic}">
+                    <span id="non_comed_id"></span>
+                </div>
 
-    <!-- to musi być defaultowo ustawione na 5 i powinno wyświetlać wartość -->
-    <label for="vol1">comedogenic ( 0 - 5):</label>
-    <input type="range" id="vol1" name="comedogenic" step ="1"  max="5" min="0" th:field="*{comedogenic}" >
+                <div>
+                    <span>irytacja :  </span>
+                    <input type="range" min="0" max="5" value="5" class="slider" id="vol2" th:field="*{irritation}">
+                    <span id="irr_v"></span>
+                </div>
 
+                <div>
+                    <span>bezpieczeństwo : </span>
+                    <input type="range" min="1" max="10" value="10" class="slider" id="vol3" th:field="*{safety}">
+                    <span id="safe_v"></span>
+                </div>
 
-    <label for="vol2">irritation ( 0 - 5):</label>
-    <input type="range" id="vol2" name="irritation" step ="1" min="0" max="5" th:field="*{irritation}" >
-
-    <hr>
-    <label for="vol3">long-term safety ( 1 - 10):</label>
-    <input type="range" id="vol3" name="safety" step ="1" min="1" max="10" th:field="*{safety}" >
-
-
-    <div class="grid">
-        <h1>OPCJE PRO</h1>
-        <div class="ingredient-group" id="wraps">
-
-            <h3>Szukane składniki: </h3>
-            <div >
-                <select class="form-control" th:field="${design.nextWanted}"  id="dropOperatorW">
-                    <option value="0">dodaj szukany składnik</option>
-                    <option th:each="ingredients : ${allIngr}" th:value="${ingredients.rowid}" th:text="${ingredients.name}"></option>
-                </select>
-                <button name="addWanted"> dodaj </button>
             </div>
-
-            <div th:each="userW: ${design.wanted}">
-                <span th:text="${userW.name}"></span>
-               <!-- <input type="submit" name="deleteW" text=" usuń" th:value="${userW.rowid}" th:field ="*{id}" /> <br/>-->
-                <button type="submit" name="deleteW" th:value="${userW.rowid}" > X</button> <br/>
-            </div>
-
-
-        </div>
-        <div class="ingredient-group" id="proteins">
-            <h3>Niechciane składniki:</h3>
-            <div >
-                <select class="form-control" th:field="${design.nextUnwanted}"  id="dropOperatorU">
-                    <option value="0">dodaj niechciany składnik</option>
-                    <option th:each="ingredients : ${allIngr}" th:value="${ingredients.rowid}" th:text="${ingredients.name}"></option>
-                </select>
-                <button name="addUnwanted"> dodaj </button>
-            </div>
-
-            <div th:each="userU: ${design.unwanted}">
-                <span th:text="${userU.name}"></span>
-               <!-- <input type="submit" name="deleteU" text=" usuń" th:value="${userU.rowid}" th:field ="*{id}" /> <br/>-->
-                <button type="submit" name="deleteU" th:value="${userU.rowid}" > X</button> <br/>
-            </div>
-
-
         </div>
 
 
+    </label>
+    <script>
+        var slider2 = document.getElementById("vol2");
+        var output2 = document.getElementById("irr_v");
+        output2.innerHTML = slider2.value;
+        slider2.oninput = function() {
+            output2.innerHTML = this.value;
+        }
+    </script>
+
+    <script>
+        var slider4 = document.getElementById("vol4");
+        var output4 = document.getElementById("non_comed_id");
+        output4.innerHTML = slider4.value;
+        slider4.oninput = function() {
+            output4.innerHTML = this.value;
+        }
+    </script>
+    <script>
+
+        var slider3 = document.getElementById("vol3");
+        var output3 = document.getElementById("safe_v");
+        output3.innerHTML = slider3.value;
+        slider3.oninput = function() {
+            output3.innerHTML = this.value;
+        }
+    </script>
+
+
+   <!-- <button name="save">Zapisz swoje ustawienia</button> <br>-->
+
+    <div class="row">
+        <div class="col-sm-6">
+            <label>
+                <p class="label-txt">SZUKANE SKŁADNIKI</p> <br>
+                <div >
+                    <select class="form-control" th:field="${design.nextWanted}"  id="dropOperatorW">
+                        <option value="0">dodaj szukany składnik</option>
+                        <option th:each="ingredients : ${allIngr}" th:value="${ingredients.rowid}" th:text="${ingredients.name}"></option>
+                    </select>
+                    <br>
+                    <button name="addWanted"> dodaj </button>
+                    <br>
+                </div>
+                <div th:each="userW: ${design.wanted}">
+                    <div class="ListProduct">
+                        <span th:text="${userW.name}"></span>
+                        <button type="submit" name="deleteW" th:value="${userW.rowid}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <!-- <button type="submit" name="deleteW" th:value="${userW.rowid}" > X</button> --><br/>
+                    </div>
+                </div>
+            </label>
+
+        </div>
+        <div class="col-sm-6">
+            <label>
+                <p class="label-txt">NIECHCIANE SKŁADNIKI</p> <br>
+                <div >
+                    <select class="form-control" th:field="${design.nextUnwanted}"  id="dropOperatorU">
+                        <option value="0">dodaj niechciany składnik</option>
+                        <option th:each="ingredients : ${allIngr}" th:value="${ingredients.rowid}" th:text="${ingredients.name}"></option>
+                    </select>
+                    <br>
+                    <button name="addUnwanted"> dodaj </button>
+                </div>
+
+                <div th:each="userU: ${design.unwanted}">
+                    <div class="ListProduct">
+                        <span th:text="${userU.name}"></span>
+
+                        <button type="submit" name="deleteU" th:value="${userU.rowid}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> <br>
+                    </div>
+
+                </div>
+            </label>
+        </div>
     </div>
-    <input type="text" th:field="*{name}"/>
-    <span th:text="${#fields.hasErrors('name')}">XXX</span>
-    <span class="validationError"
-          th:if="${#fields.hasErrors('name')}"
-          th:errors="*{name}">Name Error</span>
+    <label>
+        <p class="label-txt">MARKA</p>
+        <!--<input type="text" class="input">-->
+        <!-- <input type="text" class="input" name="username" id="username" />-->
+        <input type="text" CLASS="input" th:field="*{brand}"/>
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </label>
+
+    <label>
+        <p class="label-txt">NAZWA PRODUKTU</p>
+        <!--<input type="text" class="input">-->
+       <!-- <input type="text" class="input" name="username" id="username" />-->
+        <input type="text" CLASS="input" th:field="*{name}"/>
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </label>
+
     <br/>
     <div>
         <button name="save">SZUKAJ </button>
     </div>
 
-
-
 </form>
-</body>
-</html>
-
-
-
-<!--<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Filtrowanie po składzie</title>
-    <link rel="stylesheet" th:href="@{/styles.css}" />
-</head>
-
-<body>
-<h1>Dopasuj kosmetyk do swojej skóry</h1>
-
-<form method="POST" th:object="${design}">
-
-
-    <span class="validationError"
-          th:if="${#fields.hasErrors('unwanted')}"
-          th:errors="*{unwanted}">Ingredient Error</span>
-
-
-
-    <label for="vol1">comedogenic ( 0 - 5):</label>
-    <input type="range" id="vol1" name="comedogenic" step ="1"  max="5" min="0" th:field="*{comedogenic}" >
-
-        <label for="vol2">irritation ( 0 - 5):</label>
-        <input type="range" id="vol2" name="irritation" step ="1" min="0" max="5" th:field="*{irritation}" >
-
-        <hr>
-        <label for="vol3">long-term safety ( 1 - 10):</label>
-        <input type="range" id="vol3" name="safety" step ="1" min="1" max="10" th:field="*{safety}" >
-
-
-    <div class="grid">
-        <h1>OPCJE PRO</h1>
-        <div class="ingredient-group" id="wraps">
-
-            <h3>Designate your atives:</h3>
-            <div th:each="unwanted : ${activ}">
-                <input name="unwanted" type="checkbox" th:value="${unwanted.rowid}" />
-                <span th:text="${unwanted.name}">INGREDIENT</span><br/>
-            </div>
-
-        </div>
-
-        <div class="ingredient-group" id="proteins">
-            <h3>Pick your protein:</h3>
-            <div th:each="unwanted : ${wrong}">
-                <input name="unwanted" type="checkbox" th:value="${unwanted.rowid}" />
-                <span th:text="${unwanted.name}">INGREDIENT</span><br/>
-            </div>
-        </div>
-
-        <div class="ingredient-group" id="cheeses">
-            <h3>Choose your cheese:</h3>
-            <div th:each="unwanted : ${emollient}">
-                <input name="unwanted" type="checkbox" th:value="${unwanted.rowid}" />
-                <span th:text="${unwanted.name}">INGREDIENT</span><br/>
-            </div>
-        </div>
-
-        <div class="ingredient-group" id="veggies">
-            <h3>Determine your veggies:</h3>
-            <div th:each="unwanted : ${fragrance}">
-                <input name="unwanted" type="checkbox" th:value="${unwanted.id}" />
-                <span th:text="${unwanted.name}">INGREDIENT</span><br/>
-            </div>
-        </div>
-
-        <div class="ingredient-group" id="sauces">
-            <h3>Select your sauce:</h3>
-            <div th:each="unwanted : ${sunscreen}">
-                <input name="unwanted" type="checkbox" th:value="${unwanted.rowid}" />
-                <span th:text="${unwanted.name}">INGREDIENT</span><br/>
-            </div>
-        </div>
-    </div>
-
-    <div>
-
-
-        <h3>Name your taco creation:</h3>
-        <input type="text" th:field="*{name}"/>
-        <span th:text="${#fields.hasErrors('name')}">XXX</span>
-        <span class="validationError"
-              th:if="${#fields.hasErrors('name')}"
-              th:errors="*{name}">Name Error</span>
-
-        <br/>
-
-        <button>Submit your taco</button>
-    </div>
-</form>
-</body>
-</html> -->
-
-
-
-
-<!--<form action="/action_page.php">
-        <label for="vol1">comedogenic ( 0 - 5):</label>
-        <input type="range" id="vol1" name="comedogenic" step ="1" min="0" max="5" th:field="*{comedogenic}" >-->
-
-
-        <!-- <label for="vol2">irritation ( 0 - 5):</label>
-        <input type="range" id="vol2" name="irritation" step ="1" min="0" max="5" th:field="*{irritation}" >
-
-        <hr>
-        <label for="vol3">long-term safety ( 0 - 10):</label>
-        <input type="range" id="vol3" name="safety" step ="1" min="0" max="10" th:field="*{safety}" >
-
-    </form>-->
-

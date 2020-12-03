@@ -50,11 +50,6 @@ public class ProductListController {
         }
         model.addAttribute("safeProduct", safeProduct);
 
-        //System.out.println("wanted: " + safeProduct.getWanted());
-        //System.out.println("unwanted : " + safeProduct.getUnwanted() +"is empty: "+  safeProduct.getUnwanted().isEmpty());
-        //List<Ingredient> tmp = new ArrayList<>();
-        //System.out.println("lista: " + tmp + " is empty: " + tmp.isEmpty());
-
         List<Product> products = new ArrayList<>();
         // było == null zmienam na .isEmpty
         if(safeProduct.getWanted().isEmpty() && safeProduct.getUnwanted().isEmpty()){
@@ -135,9 +130,8 @@ public class ProductListController {
         User user = userRepository.findByUsername(principal.getName());
          // Sprawdzam czy sładnik ma parametry nie przekraczające cis użytkownika
         for(IngredientUser i : ingredients){
-            i.CheckSafety(user);
+            i.CheckSafety(user, userRepository);
         }
-
         String liked = "dodaj do ulubionych";
         boolean isLiked = productRepository.isLiked(user.getId(), product.getId());
         if(isLiked == true){

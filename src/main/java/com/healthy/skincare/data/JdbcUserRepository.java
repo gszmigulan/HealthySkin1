@@ -65,6 +65,17 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
+    public  void deleteUser(String username)
+    {   User user = findByUsername(username);
+        jdbc.update("delete from user where username = ?", username);
+        jdbc.update("delete from user_autoryzacja where username = ?", username);
+        jdbc.update("delete from user_comments where id_user = ?", user.getId());
+        jdbc.update("delete from user_liked where id_user = ? ", user.getId());
+        jdbc.update("delete from user_wanted where id_user = ? ", user.getId());
+        jdbc.update("delete from user_unwanted where id_user = ? ", user.getId());
+    }
+
+    @Override
     public void addComment(Long id_user, Long id_product, String text, int score){
         Date data = new Date(Calendar.getInstance().getTime().getTime());
         jdbc.update("insert into user_comments values(?,?,?,?,?)", id_user, id_product, text, score, data);
@@ -110,7 +121,28 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     public long saveUserInfo(User user){
+        PreparedStatementCreatorFactory preparedStatementCreatorFactory =
+                new PreparedStatementCreatorFactory(
+                        "insert into user( username ,password , fullname, comed, irr, safety, enabled) " +
+                                "values(?,?,?, ?, ?, ?,?)",
+                        Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.INTEGER, Types.INTEGER, Types.INTEGER
+
+                );
+        preparedStatementCreatorFactory.setReturnGeneratedKeys(Boolean.TRUE);
+
         PreparedStatementCreator psc =
+                preparedStatementCreatorFactory.newPreparedStatementCreator(
+                        Arrays.asList(
+                                user.getUsername(),
+                                user.getPassword(),
+                                user.getFullname(),
+                                user.getComed(),
+                                user.getIrr(),
+                                user.getSafety(),
+                                1
+                        )
+                );
+        /*PreparedStatementCreator psc =
                 new PreparedStatementCreatorFactory(
                         "insert into user( username ,password , fullname, comed, irr, safety, enabled) " +
                                 "values(?,?,?, ?, ?, ?,?)",
@@ -125,7 +157,7 @@ public class JdbcUserRepository implements UserRepository {
                                         user.getSafety(),
                                         1
                                 )
-                        );
+                        );*/
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(psc, keyHolder);
         return keyHolder.getKey().longValue();

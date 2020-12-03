@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Slf4j
@@ -23,6 +24,7 @@ public class AddingIngredientController {
     private final IngredientRepository ingredientRepository;
     private final ProductRepository productRepository;
 
+    private String name;
     @Autowired
     public AddingIngredientController(IngredientRepository ingredientRepository, ProductRepository productRepository){
         this.ingredientRepository = ingredientRepository;
@@ -59,6 +61,8 @@ public class AddingIngredientController {
             i++;
         }
         model.addAttribute("newIngr", newIngr);
+        System.out.println("NEW INGR" + newIngr);
+        name = newIngr.getName();
 
         return "addIngredientName";
     }
@@ -76,9 +80,14 @@ public class AddingIngredientController {
 
 
     @PostMapping(value = "/ingredient" , params="new")
-    public String addNewIngredient(@ModelAttribute designIngredient newIngr, @Valid IngredientsNew ingredientsNew){
-
+    public String addNewIngredient(HttpServletRequest request, @ModelAttribute designIngredient newIngr, @Valid IngredientsNew ingredientsNew){
+        //System.out.println("nazwa: " + newIngr.getName() + " albo: " + ingredientsNew.getName());
+        //String ingr_name = request.getParameter("ingr-name");
+        //System.out.println("request: " + ingr_name);
         Comed_irr_safe cis = transformData(newIngr);
+        if(name == null){
+            cis.isOk = false;
+        }
         if(!cis.isOk){
             System.out.println("BŁĄD, NIEPOPRAWNE DANE");
             List<String> warnings = new ArrayList<>();
@@ -88,7 +97,7 @@ public class AddingIngredientController {
         }
         // tu dodaje składnik do bazy
         Ingredient ingredient = new Ingredient(
-                newIngr.getName(),
+                name,
                 newIngr.getTypes(),
                 cis.comed_max,
                 cis.comed_min,

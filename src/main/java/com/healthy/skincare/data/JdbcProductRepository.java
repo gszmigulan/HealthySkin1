@@ -43,7 +43,7 @@ public class JdbcProductRepository implements ProductRepository {
     public Product findByBrandAndName(String brand, String name){
         Product prod = new Product("-1", "-1", -1, -1, -1, -1, -1, -1);
         try {
-            return jdbc.queryForObject("select brand, name, comed_max, comed_min, " +
+            return jdbc.queryForObject("select rowid, brand, name, comed_max, comed_min, " +
                             "irr_max, irr_min, safety_max, safety_min from produkty where brand= ? and name = ? ",
                     this::mapRowToProduct, brand, name);
         }
@@ -67,36 +67,44 @@ public class JdbcProductRepository implements ProductRepository {
 
     @Override
     public  Iterable<Product> findByInciW(SafeProduct safeProduct){
-        System.out.println("to jest strona fundbyy wanted");
         String wn = IngrListToString(safeProduct.getWanted());
-        System.out.println("lista wanted : " + wn);
         int list_length = safeProduct.getWanted().size();
-        System.out.println("ilośćwybranych w wanted: " +  list_length);
+        String szukane_marka = "'%" +safeProduct.getBrand() + "%'";
+        szukane_marka.toLowerCase();
+        String szukane_nazwa = "'%" +safeProduct.getName() + "%'";
+        szukane_nazwa.toLowerCase();
+
+
         return jdbc.query("select rowid, brand, name, comed_max, comed_min," +
                 "irr_max, irr_min, safety_max, safety_min from produkty " +
                 "where rowid in ( select id_product from produkty_sklad where " +
                 "id_ingredient in " + wn + "group by id_product having count(id_product) = " +
-                Integer.toString(list_length)+
+                list_length +
                 ") and rowid not in ( select id_product from produkty_sklad where id_ingredient in " +
-                "( select id_ingredient from skladniki where comed_max > " + Integer.toString(safeProduct.getComedogenic()) +
-                 " and irr_max > "+ Integer.toString(safeProduct.getIrritation())+
-                " and safety_max > "+ Integer.toString(safeProduct.getSafety()) +
-                " and id_ingredient not in"+ wn +") )" , this::mapRowToProduct);
+                "( select id_ingredient from skladniki where comed_max > " + safeProduct.getComedogenic() +
+                 " and irr_max > "+ safeProduct.getIrritation()+
+                " and safety_max > "+ safeProduct.getSafety() +
+                " and id_ingredient not in"+ wn +") ) " + " and brand like " + szukane_marka +
+                " and name like " + szukane_nazwa + " ", this::mapRowToProduct);
     }
     @Override
     public Iterable<Product> findByInciU(SafeProduct safeProduct){ // uwanted
-        System.out.println("to jest strona fundbyy Un");
+        //System.out.println("to jest strona fundbyy Un");
         // z tego un to lista niechcianych do wstawienia do query
         String un = IngrListToString(safeProduct.getUnwanted());
-        System.out.println("lista unwanted : " + un);
+        //System.out.println("lista unwanted : " + un);
+        String szukane_nazwa = "'%" +safeProduct.getName() + "%'";
+        szukane_nazwa.toLowerCase();
+        String szukane_marka = "'%" +safeProduct.getBrand() + "%'";
+        szukane_marka.toLowerCase();
 
         return jdbc.query("select rowid, brand, name, comed_max, comed_min," +
                         " irr_max, irr_min, safety_max, safety_min  from produkty " +
-                        "where comed_max <= " + Integer.toString(safeProduct.getComedogenic()) +
-                        " and irr_max <= " +  Integer.toString(safeProduct.getIrritation()) +
-                        " and safety_max <= " + Integer.toString(safeProduct.getSafety()) +
+                        "where comed_max <= " + safeProduct.getComedogenic() +
+                        " and irr_max <= " +  safeProduct.getIrritation() +
+                        " and safety_max <= " + safeProduct.getSafety() +
                         " and rowid not in (select id_product from produkty_sklad where id_ingredient in " +
-                        un + " )",
+                        un + " )" + " and brand like " + szukane_marka + " and name like " + szukane_nazwa + " ",
                 this::mapRowToProduct);
     }
     @Override
@@ -104,17 +112,11 @@ public class JdbcProductRepository implements ProductRepository {
         String un = IngrListToString(safeProduct.getUnwanted());
         String wn = IngrListToString(safeProduct.getWanted());
         int list_length = safeProduct.getWanted().size();
-        System.out.println("select rowid, brand, name, comed_max, comed_min," +
-                "irr_max, irr_min, safety_max, safety_min from produkty " +
-                "where rowid is in ( select id_product from produkty_sklad where " +
-                "id_ingredient in " + wn + "group by id_product having count(id_product) = " +
-                Integer.toString(list_length)+
-                ") and is not in ( select id_product from prodkty_sklad where id_ingredient in"+ un+ " ) " +
-                " and is not in ( select id_product from produkty_sklad where id_ingredient in " +
-                "( select id_ingrdient from skladniki where comed_max > " + Integer.toString(safeProduct.getComedogenic()) +
-                " and irr_max > "+ Integer.toString(safeProduct.getIrritation())+
-                " and safety_max > "+ Integer.toString(safeProduct.getSafety()) +
-                " and id_ingredient not in "+ wn +" ) )");
+        String szukane_nazwa = "'%" +safeProduct.getName() + "%'";
+        szukane_nazwa.toLowerCase();
+        String szukane_marka = "'%" +safeProduct.getBrand() + "%'";
+        szukane_marka.toLowerCase();
+
         return jdbc.query("select rowid, brand, name, comed_max, comed_min," +
                 " irr_max, irr_min, safety_max, safety_min from produkty " +
                 "where rowid in ( select id_product from produkty_sklad where " +
@@ -125,7 +127,8 @@ public class JdbcProductRepository implements ProductRepository {
                 "( select id_ingredient from skladniki where comed_max > " + Integer.toString(safeProduct.getComedogenic()) +
                 " and irr_max > "+ Integer.toString(safeProduct.getIrritation())+
                 " and safety_max > "+ Integer.toString(safeProduct.getSafety()) +
-                " and id_ingredient not in "+ wn +" ) )" , this::mapRowToProduct);
+                " and id_ingredient not in "+ wn +" ) ) and brand like " + szukane_marka +
+                " and name like " + szukane_nazwa + " " , this::mapRowToProduct);
     }
 
     public String IngrListToString(List<Ingredient> ingr){
@@ -152,16 +155,18 @@ public class JdbcProductRepository implements ProductRepository {
 
     @Override
     public Iterable<Product> findByInci(SafeProduct safeProduct){
-        String szukane = "'%" +safeProduct.getName() + "%'";
-        szukane.toLowerCase();
+        String szukane_nazwa = "'%" +safeProduct.getName() + "%'";
+        szukane_nazwa.toLowerCase();
+        String szukane_marka = "'%" +safeProduct.getBrand() + "%'";
+        szukane_marka.toLowerCase();
         // szukane muszę dodać jeszcze do U, W  i UW
-        System.out.println( "name: " + szukane);
+        //System.out.println( "name: " + szukane);
         return jdbc.query("select rowid, brand, name, comed_max, comed_min," +
                 " irr_max, irr_min, safety_max, safety_min  from produkty " +
                 "where comed_max <= " + safeProduct.getComedogenic() +
                 " and irr_max <= " +  safeProduct.getIrritation() +
                 " and safety_max <= " + safeProduct.getSafety() +
-                " and ( brand like " + szukane + " or name like " + szukane +" )",
+                " and  brand like " + szukane_marka + " and name like " + szukane_nazwa +" ",
                 this::mapRowToProduct );
     }
 
@@ -239,6 +244,14 @@ public class JdbcProductRepository implements ProductRepository {
                         "values (?, ?)",
                 productId, ingredient.getRowid()
         );
+    }
+    @Override
+    public void deleteProduct(String brand, String name){
+        Product product = findByBrandAndName(brand, name);
+        jdbc.update("delete from produkty where brand = ? and name = ?", brand, name);
+        jdbc.update("delete from produkty_sklad where id_product = ? ", product.getId());
+        jdbc.update("delete from user_comments where id_product = ? ", product.getId() );
+        jdbc.update("delete from user_liked where id_product = ?", product.getId());
     }
 
 

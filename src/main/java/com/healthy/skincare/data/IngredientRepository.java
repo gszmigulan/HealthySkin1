@@ -10,4 +10,5 @@ public interface IngredientRepository {
     Boolean isInBase(String name);
     Iterable<Ingredient> getProductIngredients(Long id);
     void save_next_name(String name, Long id);
+    void deleteIngredient(String name);
 }
