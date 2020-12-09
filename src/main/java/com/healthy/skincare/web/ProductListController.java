@@ -86,6 +86,12 @@ public class ProductListController {
         return  "redirect:/productList/one";
     }
 
+    @PostMapping(value="/filtred", params="back")
+    public String goBackFilters(SafeProduct safeProduct){
+        safeProduct.setBack("T");
+        return "redirect:/design";
+    }
+
 
  /// wyświetlanie ulubionych
     @GetMapping("/favorite")

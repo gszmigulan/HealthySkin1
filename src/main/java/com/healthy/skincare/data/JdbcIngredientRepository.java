@@ -51,9 +51,11 @@ public class JdbcIngredientRepository implements IngredientRepository {
 
     @Override
     public  Iterable<Ingredient> getProductIngredients(Long id){
-        return jdbc.query("select rowid, name, type, comed_max, comed_min, irr_max, irr_min, " +
+        return jdbc.query("select skladniki.rowid, skladniki.name, skladniki.type, skladniki.comed_max,skladniki.comed_min, skladniki.irr_max, skladniki.irr_min, skladniki.safety_max, skladniki.safety_min  from skladniki, produkty_sklad where skladniki.rowid = produkty_sklad.id_ingredient\n" +
+                "and produkty_sklad.id_product = ? order by produkty_sklad.rowid", this::mapRowToIngredient, id);
+       /* return jdbc.query("select rowid, name, type, comed_max, comed_min, irr_max, irr_min, " +
                 " safety_max, safety_min from skladniki where rowid in ( select id_ingredient from " +
-                " produkty_sklad where id_product = ?)", this::mapRowToIngredient, id);
+                " produkty_sklad where id_product = ? order by rowid ) ", this::mapRowToIngredient, id);*/
     }
 
     @Override

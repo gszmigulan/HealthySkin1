@@ -17,6 +17,7 @@ public class SafeProduct {
     private int comedogenic;
     private int irritation;
     private int safety;
+    private String back = "F";
     // była lista składników, ale to mi się nie chce tak dodawać, wieć niech będzie lista id
     // zawsze mogę dopisać w javascripcie opcję , żeby przycisk dało się nacisnąć jeśli wszystkie 3 pola są wypełnione
     // to chyba powinno być na id skladnika więc string który jest id

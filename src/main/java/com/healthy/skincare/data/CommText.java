@@ -6,4 +6,5 @@ import lombok.Data;
 public class CommText {
     public String text;
     public int score;
+    // może jeszcze data
 }

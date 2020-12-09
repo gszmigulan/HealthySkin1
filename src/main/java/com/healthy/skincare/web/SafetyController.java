@@ -59,29 +59,35 @@ public class SafetyController {
         User user = userRepository.findByUsername(principal.getName());
         System.out.println("WRACAM DO DESIGN : \n design : " + design + "\n safeprod: " + safeProduct);
         System.out.println("is defined: "+ defined);
+
         /// jak pierwszy raz wchodzę to ni jest zdefiniowane
         /// potem już korzystam z moich danych
         if(defined == false) {
-            //SafeProduct safeProduct = new SafeProduct();
-            List<String> userWanted = userRepository.getWantedList(user.getId());
-            List<String> userUnwanted = userRepository.getUnwantedList(user.getId());
+            if(!design.getBack().equals("T")){
+                //SafeProduct safeProduct = new SafeProduct();
+                List<String> userWanted = userRepository.getWantedList(user.getId());
+                List<String> userUnwanted = userRepository.getUnwantedList(user.getId());
 
-            List<Ingredient> WantedList = c.toIngredientList(userWanted, allIngr);//new ArrayList<>();
-            List<Ingredient> UnwantedList = c.toIngredientList(userUnwanted, allIngr);
-            List<String> warnings = new ArrayList<>();
+                List<Ingredient> WantedList = c.toIngredientList(userWanted, allIngr);//new ArrayList<>();
+                List<Ingredient> UnwantedList = c.toIngredientList(userUnwanted, allIngr);
+                List<String> warnings = new ArrayList<>();
 
-            design.setUnwanted(UnwantedList);
-            design.setWanted(WantedList);
-            safeProduct.setWanted(WantedList);
-            safeProduct.setUnwanted(UnwantedList);
-            safeProduct.setWarnings(warnings);
-            safeProduct.setComedogenic(user.getComed());
-            safeProduct.setIrritation(user.getIrr());
-            safeProduct.setSafety(user.getSafety());
+                design.setUnwanted(UnwantedList);
+                design.setWanted(WantedList);
+                safeProduct.setWanted(WantedList);
+                safeProduct.setUnwanted(UnwantedList);
+                safeProduct.setWarnings(warnings);
+                safeProduct.setComedogenic(user.getComed());
+                safeProduct.setIrritation(user.getIrr());
+                safeProduct.setSafety(user.getSafety());
 
-            //safeProduct.setIrritation(5);
-            defined = true;
+                //safeProduct.setIrritation(5);
+                defined = true;
+            }
+
         }
+        design.setBack("F");
+        safeProduct.setBack("F");
         // safe pole defined =  ? jeśli nie jest to  definiuję za pomocą bazy danych jeśli jest to biorę obiekt
         /*SafeProduct*/  //safeProduct = new SafeProduct();
         design.setWanted(safeProduct.getWanted());

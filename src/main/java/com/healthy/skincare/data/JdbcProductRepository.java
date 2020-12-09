@@ -117,18 +117,7 @@ public class JdbcProductRepository implements ProductRepository {
         String szukane_marka = "'%" +safeProduct.getBrand() + "%'";
         szukane_marka.toLowerCase();
 
-        return jdbc.query("select rowid, brand, name, comed_max, comed_min," +
-                " irr_max, irr_min, safety_max, safety_min from produkty " +
-                "where rowid in ( select id_product from produkty_sklad where " +
-                "id_ingredient in " + wn + "group by id_product having count(id_product) = " +
-                Integer.toString(list_length)+
-                ") and rowid not in ( select id_product from produkty_sklad where id_ingredient in "+ un+ " ) " +
-                " and rowid not in ( select id_product from produkty_sklad where id_ingredient in " +
-                "( select id_ingredient from skladniki where comed_max > " + Integer.toString(safeProduct.getComedogenic()) +
-                " and irr_max > "+ Integer.toString(safeProduct.getIrritation())+
-                " and safety_max > "+ Integer.toString(safeProduct.getSafety()) +
-                " and id_ingredient not in "+ wn +" ) ) and brand like " + szukane_marka +
-                " and name like " + szukane_nazwa + " " , this::mapRowToProduct);
+        return jdbc.query(" " , this::mapRowToProduct);
     }
 
     public String IngrListToString(List<Ingredient> ingr){

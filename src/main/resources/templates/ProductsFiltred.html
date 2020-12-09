@@ -147,7 +147,9 @@
 <form method="POST" th:action="@{/productList/filtred}" th:object="${one}">
     <div class="backHome">
         <a th:href="@{/}" class="btn btn-outline-secondary">strona główna</a>
+        <button type="submit" class = "btn btn-outline-secondary" name="back" > filtry </button>
     </div>
+
     <h3>Znalezione produkty:</h3>
     <br>
     <div class="table-responsive">

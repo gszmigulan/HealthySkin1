@@ -9,10 +9,10 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 @Data
-//@RequiredArgsConstructor
 //powinno być private
 public class Ingredient {
-    /*private*/ public /*final*/ long rowid;
+    /*  w diagramie uml jest przedstawione jako private*/
+    /*private*/ public  long rowid;
     /*private*/public final String name;
     /*private*/public final  String type;
     /*private*/ public final int comed_max;
